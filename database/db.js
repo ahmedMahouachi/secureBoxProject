@@ -1,11 +1,19 @@
 const mongoose = require('mongoose');
-async function connectDb(url) {
-    if (!url){
+
+
+async function connectDb(uri) {
+    if (!uri) {
         throw Error('MONGOURI manquant')
     }
-    await console.log('database connected',mongoose.connection.host);
-    mongoose.connection.on('error',(err)=>{
-        consoleerror('mongo error',err.message);
+    await mongoose.connect(uri)
+    
+    console.log('databse connected', mongoose.connection.host);
+    
+    mongoose.connection.on('error', (err) => {
+        console.error('mongo error', err.message);
+        
     })
 }
+
+
 module.exports = {connectDb};
