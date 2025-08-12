@@ -27,7 +27,7 @@ exports.createDocument = async (req, res) => {
   }
 };
 
-// 📌 Récupérer tous les documents
+// Récupérer tous les documents
 exports.getDocuments = async (req, res) => {
   try {
     const documents = await Document.find().populate("userId", "name email");
@@ -79,7 +79,7 @@ exports.updateDocument = async (req, res) => {
   }
 };
 
-// 📌 Supprimer un document
+// Supprimer un document
 exports.deleteDocument = async (req, res) => {
   try {
     const document = await Document.findById(req.params.id);
