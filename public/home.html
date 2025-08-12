@@ -3,48 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <title>Accueil - Gestion des Fichiers</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Barre de navigation -->
   <nav>
-    <table border="0" width="100%">
-      <tr>
-        <td><strong>Utilisateur :</strong> John Doe</td>
-        <td align="right">
-          <a href="/home.html">Accueil</a> |
-          <a href="#ajout">Ajouter un fichier</a> |
-          <a href="/logout">Déconnexion</a>
-        </td>
-      </tr>
-    </table>
-    <hr />
+    <div class="nav-left">
+      Utilisateur : <strong>John Doe</strong>
+    </div>
+    <div class="nav-right">
+      <a href="/home.html">Accueil</a>
+      <a href="/logout">Déconnexion</a>
+    </div>
+    <div class="clear"></div>
   </nav>
 
-  <h2 id="ajout">Ajouter un fichier</h2>
-  <form id="uploadForm" enctype="multipart/form-data" method="post" action="/api/files">
-    <input type="file" name="file" required />
-    <button type="submit">Ajouter</button>
-  </form>
+  <div class="container">
+    <h2 id="ajout">Ajouter un fichier</h2>
+    <form id="uploadForm" enctype="multipart/form-data" method="post" action="/api/files">
+      <input type="file" name="file" required />
+      <button type="submit">Ajouter</button>
+    </form>
 
-  <h2>Liste des fichiers</h2>
-  <table border="1" width="100%">
-    <thead>
-      <tr>
-        <th>Type de fichier</th>
-        <th>Nom du fichier</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Exemples de fichiers ou lignes vides -->
-      <tr><td>PDF</td><td>rapport.pdf</td><td><button>Supprimer</button></td></tr>
-      <tr><td>Image</td><td>photo.jpg</td><td><button>Supprimer</button></td></tr>
-      <tr><td>&nbsp;</td><td></td><td></td></tr>
-      <tr><td>&nbsp;</td><td></td><td></td></tr>
-      <tr><td>&nbsp;</td><td></td><td></td></tr>
-    </tbody>
-  </table>
+    <h2>Liste des fichiers</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Type de fichier</th>
+          <th>Nom du fichier</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>PDF</td><td>rapport.pdf</td><td><button onclick="return confirm('Voulez-vous vraiment supprimer ce fichier ?');">Supprimer</button>
+        <tr><td>Image</td><td>photo.jpg</td><td><button onclick="return confirm('Voulez-vous vraiment supprimer ce fichier ?');">Supprimer</button>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
 
 </body>
 </html>
