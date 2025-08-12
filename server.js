@@ -22,4 +22,3 @@ connectDb(process.env.MONGO_URI).then(() => {
     console.log("Api on http://localhost:3000");
   });
 });
-
