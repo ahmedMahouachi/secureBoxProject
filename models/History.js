@@ -7,8 +7,8 @@ const historySchema = new mongoose.Schema({
     required: true,
   },
 
-//   
-//     documentId: { 
+//   A faire après le cours si envie
+//   documentId: { 
 //     type: mongoose.Schema.Types.ObjectId,
 //     ref: 'Document', // référence à la collection documents du groupe A
 //     required: true,
