@@ -15,7 +15,7 @@ const User = require("../models/user");
  */
 const getHistory = async (req, res) => { 
     try {
-        const historyUserId = req.user.id;
+        const historyUserId = req.params.id;
         const history = await History.find({userId: historyUserId });
 
         return res.json(history);

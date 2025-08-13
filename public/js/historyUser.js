@@ -1,7 +1,9 @@
-const API_URL = "/history"; // Base de l'API
-const userId = "ID_UTILISATEUR"; // À remplacer par l'ID réel
+const API_URL = "/dashboard"; // Base de l'API
+
 const tbody = document.querySelector("tbody");
 
+const params = new URLSearchParams(window.location.search);
+    const userId = params.get("id");
 // Charger et afficher la liste des historiques
 async function chargerHistorique() {
     try {
