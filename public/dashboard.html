@@ -1,41 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecurBox</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SecureBox</title>
+<style>
+  /* Reset léger */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    margin: 0;
+    padding: 40px 20px;
+    color: #333;
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #0a3d62;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    background: transparent;
+  }
+
+  thead th {
+    background-color: #0a3d62;
+    color: #fff;
+    padding: 14px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px 8px 0 0;
+    user-select: none;
+  }
+
+  tbody tr {
+    background: white;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 8px;
+  }
+
+  tbody tr:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.15);
+  }
+
+  tbody td {
+    padding: 15px 20px;
+    font-size: 0.95rem;
+    vertical-align: middle;
+    color: #444;
+  }
+
+  tbody td a {
+    color: #0a3d62;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  tbody td a:hover {
+    text-decoration: underline;
+    color: #007BFF;
+  }
+
+  button {
+    background-color: #0a3d62;
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+
+  button:hover {
+    background-color: #07406b;
+    transform: scale(1.07);
+  }
+
+  .edit-btn {
+    background-color: #2d8a3e;
+  }
+
+  .edit-btn:hover {
+    background-color: #22692f;
+  }
+
+  .delete-btn {
+    background-color: #c0392b;
+  }
+
+  .delete-btn:hover {
+    background-color: #91281c;
+  }
+
+  /* Emoji taille plus harmonieuse */
+  button > span {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 700px) {
+    body {
+      padding: 20px 10px;
+    }
+
+    thead th, tbody td {
+      padding: 12px 10px;
+      font-size: 0.85rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 25px;
+    }
+  }
+</style>
 </head>
 <body>
-    <h1>Historique des actions - SecurBox</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Utilisateurs</th>
-                <th>Action</th>
-                <th>Date de l'action</th>
-                <th>Détails</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>User1</td>
-                <td>Téléchargement</td>
-                <td>2025-08-12</td>
-                <td><a href="details_user1.html">Nom du fichier</a></td>
-                <td><button>Modifier</button></td>
-                <td><button>Supprimer</button></td>
-            </tr>
-            <tr>
-                <td>User2</td>
-                <td>update</td>
-                <td>2025-08-10</td>
-                <td><a href="details_user1.html">Nom du fichier</a></td>
-                <td><button>Modifier</button></td>
-                <td><button>Supprimer</button></td>
-            </tr>
-        </tbody>
-    </table>
+  <h1>📜 Historique des actions - SecureBox</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Utilisateurs</th>
+        <th>Action</th>
+        <th>Date de l'action</th>
+        <th>Détails</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>User1</td>
+        <td>Téléchargement</td>
+        <td>2025-08-12</td>
+        <td><a href="details_user1.html">Nom du fichier</a></td>
+        <td><button class="edit-btn"><span>✏</span> Modifier</button></td>
+        <td><button class="delete-btn"><span>🗑</span> Supprimer</button></td>
+      </tr>
+      <tr>
+        <td>User2</td>
+        <td>Mise à jour</td>
+        <td>2025-08-10</td>
+        <td><a href="details_user2.html">Nom du fichier</a></td>
+        <td><button class="edit-btn"><span>✏</span> Modifier</button></td>
+        <td><button class="delete-btn"><span>🗑</span> Supprimer</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const deleteButtons = document.querySelectorAll('.delete-btn');
+
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          if (confirm('Tu es sûre de vouloir supprimer cette entrée ?')) {
+            const row = button.closest('tr');
+            row.remove();
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
