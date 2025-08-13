@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function fetchUsers() {
         try {
-            const response = await fetch("/get_all_users");
+            const response = await fetch("/dashboard/get_all_user");
             if (!response.ok) throw new Error("Erreur lors de la récupération des utilisateurs");
             
             const users = await response.json();
