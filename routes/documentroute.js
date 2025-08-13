@@ -21,4 +21,7 @@ router.put("/:id", upload.single("file"), documentController.updateDocument);
 // DELETE /documents/:id → supprimer un document
 router.delete("/:id", documentController.deleteDocument);
 
+// PUT /documents/:id/rename → renommer un fichier 
+router.put("/:id/rename", documentController.renameDocument);
+
 module.exports = router;
