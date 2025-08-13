@@ -1,0 +1,184 @@
+/* --- RESET SIMPLE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background-color: #f9f9f9;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- HEADER --- */
+header {
+    background-color: #398166;
+    color: #fff;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    font-family: 'Arial', sans-serif;
+    font-style: italic;
+}
+
+/* --- MAIN --- */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    color: #398166;
+    text-align: center;
+}
+
+main h2 {
+    font-size: 1.8rem;
+    margin: 1rem 0;
+    font-weight: bold;
+    color: #398166;
+}
+
+/* --- SECTIONS --- */
+main section {
+    width: 550px;
+    max-width: 90%;
+    background-color: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 1.5rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+main section:hover {
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+section p {
+    color: #398166;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.7;
+    margin: 10px 0;
+}
+
+a {
+    color: #398166;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* --- FORMULAIRES --- */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    width: 100%;
+}
+
+input, button {
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input {
+    display: block;
+    width: 250px;
+    max-width: 90%;
+    padding: 0.7rem;
+    border: 1px solid #398166;
+    margin: 1rem auto;
+}
+
+input:focus {
+    border-color: #36a577;
+}
+
+button {
+    width: 250px;
+    max-width: 90%;
+    height: 50px;
+    background-color: #398166;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin: 1rem auto;
+}
+
+button:hover {
+    background-color: #36a577;
+}
+
+/* --- Lien mot de passe oublié --- */
+.forgot-password {
+    font-size: 0.85rem;
+    color: #398166;
+    cursor: pointer;
+    text-decoration: underline;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+#errorLogin {
+    color: red;       
+    display: none;    
+    margin-top: 10px;
+}
+
+
+/* --- FOOTER --- */
+footer {
+    background-color: #398166;
+    color: #f1faee;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    main section {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    main h2 {
+        font-size: 1.5rem;
+    }
+
+    section p {
+        font-size: 12px;
+    }
+
+    input, button {
+        width: 90%;
+    }
+
+    .forgot-password {
+        font-size: 12px;
+    }
+}

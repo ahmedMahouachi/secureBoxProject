@@ -12,19 +12,19 @@
     </header>
     <main>
         <section>
+        <h2>Veillez vous connecter</h2>
             <form id="loginForm">
-                <input type="text" id="email" placeholder="email" required />
-                <input type="password" id="password" placeholder="Mot de passe" required />
+                <input type="email" id="email" name="email" placeholder="email" required />
+                <input type="password" id="password" name="password" placeholder="Mot de passe" required />  
                 <button type="submit">Se connecter</button>
             </form>
-            <p>Veillez vous connecter</p>
             <p>Mot de passe oublié?</p>
             <p>Pas encore inscrit? <a href="register.html">S'inscrire</a></p>
+            <p id="errorLogin"></p>
             <button id="google-auth">Se connecter avec id google</button>
         </section>
     </main>
-    <footer> tous droits réservés</footer>
-
+    <footer> </footer>
     <script src="./js/login.js"></script>
 </body>
 </html>

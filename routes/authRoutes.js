@@ -1,4 +1,5 @@
 const express = require("express");
+
 const passport = require("passport");
 const { login, register, me, googleAuth } = require("../controllers/authController");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -7,6 +8,7 @@ const router = express.Router();
 router.post("/login", login);
 router.post("/register", register);
 router.get("/me", authMiddleware, me);
+
 router.get(
     "/google",
     passport.authenticate("google", {
@@ -14,6 +16,7 @@ router.get(
         session: false
     })
 );
+
 router.get(
     "/google/callback",
     passport.authenticate("google", {
@@ -23,4 +26,5 @@ router.get(
     }),
     googleAuth
 );
+
 module.exports = router;
