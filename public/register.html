@@ -7,25 +7,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Créer un compte</h1>
 
- 
-  <div id="alert" class="hidden"></div>
-
-  <!-- Formulaire avec l'ID registerForm -->
-  <form id="registerForm">
-    <input type="text" name="firstName" placeholder="Prénom">
-    <input type="text" name="lastName" placeholder="Nom">
-    <input type="email" name="email" placeholder="Email">
-    <input type="password" name="password" placeholder="mot de passe">
-    <button type="submit">S'inscrire</button>
-  </form>
-
-  <p>déjà inscrit ?
-    <a href="login.html">Se connecter</a>
-  </p>
-
-  <!-- Script JS externe -->
-  <script type="module" src="/js/register.js"></script>
+    <header>
+        <h1>Inscription</h1>
+    </header>
+    <main>
+    <section>
+        <form id="registerForm">
+        <input type="nom" placeholder="Nom">
+        <input type="prenom" placeholder="prenom">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Mot de passe">
+        <button type="submit">S'inscrire</button>
+        </form>
+        <p>un element est manquent</p>
+    <p>deja inscrit?<a href="login.html"> Connectez vous ici</a></p>
+    </section>
+    </main>
+    <footer> tous droits réservés</footer>
 </body>
+<script src="./javascript/register.js"></script>
 </html>

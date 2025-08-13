@@ -15,22 +15,85 @@ html, body {
 
 /* ===== Header ===== */
 header {
-  background-color: #2f6f3e; /* Vert bandeau */
-  color: white;
-  text-align: center;
-  padding: 20px 0;
-  font-size: 1.5rem;
+
+    background-color: #398166;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
 }
 
-/* ===== Main container ===== */
-main, section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 2px white;
+    font-family: 'Arial', sans-serif;
+    font-style: italic;
 }
 
-/* ===== Form box ===== */
+/* --- MAIN & SECTIONS --- */
+main {
+    flex: 1;
+    margin-top: 50px;
+}
+
+main section {
+    margin: 0 auto;
+    width: 550px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    transition: box-shadow 0.3s ease; 
+}
+
+
+main section:hover {
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+main{
+
+   
+    margin:70px;
+    color: #398166;
+    font-size: 50px;
+    text-align: center;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+section{
+    margin-top:30px;
+}
+
+/* --- PARAGRAPHES --- */
+section p {
+    color: #398166;
+    margin-top: 10px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    line-height: 1.7;
+    font-weight: bolder;
+}
+
+p{
+    margin:10px;
+}
+a {
+  color: #398166;
+  text-decoration: none; /* si tu veux enlever le soulignement par défaut */
+}
+
+a:hover {
+  text-decoration: underline; /* effet au survol, optionnel */
+
+}
+
+
 form {
   background-color: white;
   padding: 30px;
@@ -42,14 +105,7 @@ form {
   min-width: 300px;
 }
 
-/* ===== Inputs ===== */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
+
 }
 
 input:focus {
@@ -59,13 +115,7 @@ input:focus {
 
 /* ===== Buttons ===== */
 button {
-  background-color: #2f6f3e;
-  color: white;
-  padding: 10px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+
 }
 
 button:hover {
@@ -81,12 +131,7 @@ footer {
   font-size: 0.9rem;
 }
 
-/* ===== Messages ===== */
-.alert {
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+
 }
 
 .alert.error {
