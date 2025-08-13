@@ -5,7 +5,8 @@ const path = require("path");
 // Créer un document
 exports.createDocument = async (req, res) => {
   try {
-    const { userId } = req.body;
+    //const { userId } = req.body;
+    const userId = "66b4d97b8d2a4a8d2a4a8d2a"; 
 
     if (!req.file) {
       return res.status(400).json({ message: "Aucun fichier uploadé" });
@@ -13,7 +14,7 @@ exports.createDocument = async (req, res) => {
 
     const newDocument = new Document({
       userId,
-      fileName: req.file.originalname,
+      fileName: req.file.filename,
       filePath: req.file.path,
       fileType: detectFileType(req.file.mimetype),
       mimeType: req.file.mimetype,
@@ -30,7 +31,7 @@ exports.createDocument = async (req, res) => {
 // 📌 Récupérer tous les documents
 exports.getDocuments = async (req, res) => {
   try {
-    const documents = await Document.find().populate("userId", "name email");
+    const documents = await Document.find()
     res.status(200).json(documents);
   } catch (err) {
     console.error(err);
@@ -83,12 +84,15 @@ exports.updateDocument = async (req, res) => {
 exports.deleteDocument = async (req, res) => {
   try {
     const document = await Document.findById(req.params.id);
+    const fileFullPath = path.join(__dirname, "..", "uploads", document.fileName);
     if (!document) {
       return res.status(404).json({ message: "Document non trouvé" });
     }
 
     // Supprimer le fichier physique
-    fs.unlinkSync(document.filePath);
+    console.log("Nom enregistré en DB :", document.fileName);
+console.log("Chemin complet :", fileFullPath);
+    fs.unlinkSync(fileFullPath);
     await Document.findByIdAndDelete(req.params.id);
 
     res.status(200).json({ message: "Document supprimé avec succès" });

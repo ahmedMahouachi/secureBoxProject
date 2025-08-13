@@ -1,22 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
 const documentController = require("../controllers/documentController");
+const upload = require('../middlewares/uploadMiddleware')
 
-// Configuration Multer pour le stockage des fichiers uploadés dans le dossier 'uploads'
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // dossier où seront stockés les fichiers
-  },
-  filename: (req, file, cb) => {
-    // Générer un nom unique avec timestamp + nom d'origine
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ storage });
 
 // Routes CRUD
 

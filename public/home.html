@@ -35,15 +35,17 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr><td>PDF</td><td>rapport.pdf</td><td><button onclick="return confirm('Voulez-vous vraiment supprimer ce fichier ?');">Supprimer</button>
-        <tr><td>Image</td><td>photo.jpg</td><td><button onclick="return confirm('Voulez-vous vraiment supprimer ce fichier ?');">Supprimer</button>
-        <tr><td>&nbsp;</td><td></td><td></td></tr>
-        <tr><td>&nbsp;</td><td></td><td></td></tr>
-        <tr><td>&nbsp;</td><td></td><td></td></tr>
+      <tbody id="fileTableBody">
+
       </tbody>
     </table>
   </div>
+
+  <script src="home.js"></script>
+  <script>
+    // Charger les fichiers dès que la page est prête
+    document.addEventListener("DOMContentLoaded", loadFiles);
+  </script>
 
 </body>
 </html>
