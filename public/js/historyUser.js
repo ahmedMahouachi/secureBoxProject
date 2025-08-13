@@ -31,6 +31,7 @@ async function chargerHistorique() {
                 </td>
             `;
 
+
             tbody.appendChild(tr);
         }
     } catch (error) {
@@ -50,10 +51,7 @@ async function supprimerHistorique(historyId) {
     }
 }
 
-// Modifier une entrée (placeholder pour plus tard)
-function modifierHistorique(historyId) {
-    alert(`Fonction modifier à implémenter pour l'ID : ${historyId}`);
-}
+
 
 // Lancer au chargement de la page
 document.addEventListener("DOMContentLoaded", chargerHistorique);
