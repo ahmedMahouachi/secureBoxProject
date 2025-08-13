@@ -30,7 +30,7 @@ async function chargerHistorique() {
                     <button class="supprimer" onclick="supprimerHistorique('${historique._id}')">Supprimer</button>
                 </td>
             `;
-            
+
 
             tbody.appendChild(tr);
         }
@@ -51,10 +51,7 @@ async function supprimerHistorique(historyId) {
     }
 }
 
-// Modifier une entrée (placeholder pour plus tard)
-function modifierHistorique(historyId) {
-    alert(`Fonction modifier à implémenter pour l'ID : ${historyId}`);
-}
+
 
 // Lancer au chargement de la page
 document.addEventListener("DOMContentLoaded", chargerHistorique);
