@@ -43,7 +43,7 @@ exports.getDocuments = async (req, res) => {
 // Récupérer un document par ID
 exports.getDocumentById = async (req, res) => {
   try {
-    const document = await Document.findById(req.params.id).populate("userId", "name email");
+    const document = await Document.findById(req.params.id)/*.populate("userId", "name email");*/
     if (!document) {
       return res.status(404).json({ message: "Document non trouvé" });
     }
@@ -121,7 +121,8 @@ exports.renameDocument = async (req, res) => {
     }
 
     const oldPath = document.filePath; // chemin actuel du fichier
-    const newFileName = newName + path.extname(document.fileName); // nouveau nom avec extension
+    const timestamp = Date.now();
+    const newFileName = `${timestamp}-${newName}${path.extname(document.fileName)}`;
     const newPath = path.join(path.dirname(oldPath), newFileName); // chemin complet avec le nouveau nom
 
     // Renommer le fichier sur le disque

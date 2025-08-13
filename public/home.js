@@ -51,9 +51,8 @@ function loadFiles() {
         // Nom cliquable
         const tdName = document.createElement("td");
         const link = document.createElement("a");
-        link.href = "/uploads/" + file.fileName;
+        link.href = `/fileDetails.html?id=${file._id}`;
         link.textContent = file.fileName;
-        link.target = "_blank";
         tdName.appendChild(link);
         tr.appendChild(tdName);
 
