@@ -1,59 +1,31 @@
-const API_URL = "/history"; // Base de l'API
-const userId = "ID_UTILISATEUR"; // À remplacer par l'ID réel
-const tbody = document.querySelector("tbody");
+document.addEventListener("DOMContentLoaded", () => {
+    const tableBody = document.querySelector("#usersTable tbody");
 
-// Charger et afficher la liste des historiques
-async function chargerHistorique() {
-    try {
-        const res = await fetch(`${API_URL}/get_history/${userId}`);
-        const historiques = await res.json();
-        console.log(historiques);
+    async function fetchUsers() {
+        try {
+            const response = await fetch("/get_all_users");
+            if (!response.ok) throw new Error("Erreur lors de la récupération des utilisateurs");
+            
+            const users = await response.json();
+            tableBody.innerHTML = ""; // vider le tableau
 
-        tbody.innerHTML = ""; // On vide le tableau
+            users.forEach(user => {
+                const row = document.createElement("tr");
 
-        for (const historique of historiques) {
-            const tr = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${user.firstName || ""}</td>
+                    <td>${user.lastName || ""}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td><a href="historyUser.html?id=${user._id}" class="history-link">Voir</a></td>
+                `;
 
-            tr.innerHTML = `
-                <td data-label="Utilisateur">${historique.userId || "Inconnu"}</td>
-                <td data-label="Action">${historique.action || ""}</td>
-                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : "Date inconnue"}</td>
-                <td data-label="Détails">
-                    Route : ${historique.route || ""}<br>
-                    Méthode : ${historique.method || ""}<br>
-                    IP : ${historique.adresseIP || ""}
-                </td>
-                <td data-label="Modifier">
-                    <button class="modifier" onclick="modifierHistorique('${historique._id}')">Modifier</button>
-                </td>
-                <td data-label="Supprimer">
-                    <button class="supprimer" onclick="supprimerHistorique('${historique._id}')">Supprimer</button>
-                </td>
-            `;
-
-            tbody.appendChild(tr);
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error(error);
         }
-    } catch (error) {
-        console.error("Erreur lors du chargement de l'historique :", error);
     }
-}
 
-// Supprimer une entrée
-async function supprimerHistorique(historyId) {
-    if (!confirm("Tu es sûre de vouloir supprimer cette entrée ?")) return;
-
-    try {
-        await fetch(`${API_URL}/delete_history/${historyId}`, { method: "DELETE" });
-        chargerHistorique();
-    } catch (error) {
-        console.error("Erreur lors de la suppression :", error);
-    }
-}
-
-// Modifier une entrée (placeholder pour plus tard)
-function modifierHistorique(historyId) {
-    alert(`Fonction modifier à implémenter pour l'ID : ${historyId}`);
-}
-
-// Lancer au chargement de la page
-document.addEventListener("DOMContentLoaded", chargerHistorique);
+    fetchUsers();
+});
