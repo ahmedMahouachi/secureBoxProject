@@ -19,7 +19,7 @@ async function chargerHistorique() {
             tr.innerHTML = `
                 <td data-label="Utilisateur">${historique.userId || "Inconnu"} test </td>
                 <td data-label="Action">${historique.action || ""}</td>
-                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : "Date inconnue"}</td>
+                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : ""}</td>
                 <td data-label="Détails">
                     Route : ${historique.route || ""}<br>
                     Méthode : ${historique.method || ""}<br>
@@ -32,6 +32,7 @@ async function chargerHistorique() {
                     <button class="supprimer" onclick="supprimerHistorique('${historique._id}')">Supprimer</button>
                 </td>
             `;
+
 
             tbody.appendChild(tr);
         }
@@ -52,10 +53,7 @@ async function supprimerHistorique(historyId) {
     }
 }
 
-// Modifier une entrée (placeholder pour plus tard)
-function modifierHistorique(historyId) {
-    alert(`Fonction modifier à implémenter pour l'ID : ${historyId}`);
-}
+
 
 // Lancer au chargement de la page
 document.addEventListener("DOMContentLoaded", chargerHistorique);

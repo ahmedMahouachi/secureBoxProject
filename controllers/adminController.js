@@ -48,13 +48,15 @@ const createHistoryById = async (req, res) => {
     try {
         const historyUserId = req.user.id;
         const historyRoute = req.body.route;
+        const historyAction = req.body.action;
+        const historyMethod = req.body.method;
         const historyAdresseIP = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress || "0.0.0.0";
 
         const history = await History.create({
             userId : historyUserId,
-            action : "creation",
+            action : historyAction,
             route : historyRoute, 
-            method : "CREATE",
+            method : historyMethod,
             adresseIP : historyAdresseIP
         });
 
@@ -68,7 +70,6 @@ const createHistoryById = async (req, res) => {
 
 const deleteHistory = async (req, res) =>{
     const historyId = req.params.historyId;
-        const historyRoute = req.body.route;
 
     const history = await History.findById(historyId);
 
@@ -108,10 +109,33 @@ const getAllUser = async (req, res) => {
     res.status(200).json(users);
 }
 
+const deleteUserById = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        // Vérifier si l'utilisateur existe
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+
+        // Supprimer tous les historiques liés à cet utilisateur
+        await History.deleteMany({ userId });
+
+        // Supprimer l'utilisateur
+        await user.deleteOne();
+
+        res.status(200).json({ message: "Utilisateur et historiques supprimés avec succès" });
+    } catch (error) {
+        res.status(500).json({ message: "Erreur serveur", error: error.message });
+    }
+}
+
 module.exports = {
     getHistoryById,
     getHistory,
     createHistoryById,
     deleteHistory,
-    getAllUser
+    getAllUser,
+    deleteUserById
 };
