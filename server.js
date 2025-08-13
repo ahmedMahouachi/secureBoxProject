@@ -1,17 +1,14 @@
 
 const express = require('express')
 const app = express();
-
-
-app.use(express.json());
 const adminRoute = require('./routes/adminRoute');
-
-
 const documentRoutes = require('./routes/documentroute')
 const path = require('path')
 require('dotenv').config();
 const { connectDb } = require("./database/db");
 const authRoutes = require('./routes/authRoutes');
+
+
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
@@ -26,12 +23,12 @@ app.get('/', (req, res) => {
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/files', documentRoutes)
+app.use('/history', adminRoute);
+
+
 app.get('/', (_, res) => {
   res.status(200).send('Serveur marche correctement.');
 });
-
-//Route pour accéder aux routes admin (./routes/adminRoute)
-app.use('/history', adminRoute);
 
 connectDb(process.env.MONGO_URI)
 .then(() => {
