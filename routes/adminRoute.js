@@ -4,7 +4,8 @@ const {
     getHistory,
     getHistoryById,
     createHistoryById,
-    deleteHistory
+    deleteHistory,
+    getAllUser
 } = require("../controllers/adminController");
 
 const router = express.Router();
@@ -15,6 +16,9 @@ router.get("/get_history_by_id/:historyId", getHistoryById);
 
 router.post("/create_history",authMiddleware, createHistoryById);
 router.delete("/delete_history/:historyId", deleteHistory);
+
+//Route User
+router.get("/get_all_user",getAllUser);
 //router.put("/update_history/:historyId", updateHistory);
 
 
