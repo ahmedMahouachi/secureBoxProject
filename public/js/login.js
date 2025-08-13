@@ -1,5 +1,7 @@
+
 const loginForm = document.getElementById("loginForm");
 const errorLogin = document.getElementById("errorLogin");
+let googleButton = document.getElementById('google-auth');
 
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
@@ -50,3 +52,7 @@ if (loginForm) {
     }
   });
 }
+
+googleButton.addEventListener('click', (e) => {
+  window.location.href = 'http://localhost:3000/api/auth/google'  
+});

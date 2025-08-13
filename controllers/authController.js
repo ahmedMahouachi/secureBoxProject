@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
+    
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -76,4 +77,21 @@ exports.me = async (req, res) => {
     role: user.role,
     createdAt: user.createdAt,
   });
+};
+
+exports.googleAuth = (req, res) => {
+    if (!req.user)
+        return res
+            .status(401)
+            .json({ success: false, message: "Authentication echouée." });
+    const token = jwt.sign(
+        {
+            id: req.user._id,
+            role: req.user.role,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "2h" }
+    );
+
+    res.redirect(`/home.html?token=${token}`);
 };
