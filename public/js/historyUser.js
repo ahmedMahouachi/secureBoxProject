@@ -17,7 +17,7 @@ async function chargerHistorique() {
             tr.innerHTML = `
                 <td data-label="Utilisateur">${historique.userId || "Inconnu"} test </td>
                 <td data-label="Action">${historique.action || ""}</td>
-                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : "Date inconnue"}</td>
+                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : ""}</td>
                 <td data-label="Détails">
                     Route : ${historique.route || ""}<br>
                     Méthode : ${historique.method || ""}<br>
