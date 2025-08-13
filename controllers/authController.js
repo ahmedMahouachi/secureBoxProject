@@ -56,6 +56,9 @@ exports.register = async (req, res) => {
 
   res.status(201).json({ success: true, message: "Utilisateur créé." });
 };
+
+
+
 exports.me = async (req, res) => {
   const userId = req.user.id;
 
