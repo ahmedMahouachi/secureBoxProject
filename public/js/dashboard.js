@@ -1,43 +1,59 @@
-const API_URL = "/history"; // base de l'API
-const userId = "ID_UTILISATEUR"; // remplacer par l'ID réel
-const historiqueContainer = document.getElementById("historiqueContainer");
+const API_URL = "/history"; // Base de l'API
+const userId = "ID_UTILISATEUR"; // À remplacer par l'ID réel
+const tbody = document.querySelector("tbody");
 
+// Charger et afficher la liste des historiques
 async function chargerHistorique() {
+    try {
+        const res = await fetch(`${API_URL}/get_history/${userId}`);
+        const historiques = await res.json();
+        console.log(historiques);
 
-    const res = await fetch(`${API_URL}/get_history/${userId}`);
-    const historique = await res.json();
-    console.log(historique);
+        tbody.innerHTML = ""; // On vide le tableau
 
-    historiqueContainer.innerHTML = "";
+        for (const historique of historiques) {
+            const tr = document.createElement("tr");
 
-    for (const entry of historique) {
-      const div = document.createElement("div");
-      div.className = "history-table";
+            tr.innerHTML = `
+                <td data-label="Utilisateur">${historique.userId || "Inconnu"}</td>
+                <td data-label="Action">${historique.action || ""}</td>
+                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : "Date inconnue"}</td>
+                <td data-label="Détails">
+                    Route : ${historique.route || ""}<br>
+                    Méthode : ${historique.method || ""}<br>
+                    IP : ${historique.adresseIP || ""}
+                </td>
+                <td data-label="Modifier">
+                    <button class="modifier" onclick="modifierHistorique('${historique._id}')">Modifier</button>
+                </td>
+                <td data-label="Supprimer">
+                    <button class="supprimer" onclick="supprimerHistorique('${historique._id}')">Supprimer</button>
+                </td>
+            `;
 
-      div.innerHTML = `
-        <h3></h3>
-        <p>Action : ${entry.action || ""}</p>
-        <small>Créé le ${new Date(entry.createdAt).toLocaleDateString()}</small>
-        <p>Détails : ${entry.details || ""}</p>
-        <button onclick="supprimerHistorique('${entry._id}')">Supprimer</button>
-      `;
-
-      historiqueContainer.appendChild(div);
+            tbody.appendChild(tr);
+        }
+    } catch (error) {
+        console.error("Erreur lors du chargement de l'historique :", error);
     }
-
 }
 
-/*// Supprimer une entrée
+// Supprimer une entrée
 async function supprimerHistorique(historyId) {
-  if (!confirm("Tu es sûre de vouloir supprimer cette entrée ?")) return;
+    if (!confirm("Tu es sûre de vouloir supprimer cette entrée ?")) return;
 
-  try {
-    await fetch(`${API_URL}/delete_history/${historyId}`, { method: "DELETE" });
-    chargerHistorique(); // recharge l'historique après suppression
-  } catch (err) {
-    console.error("Erreur lors de la suppression :", err);
-  }
-}*/
+    try {
+        await fetch(`${API_URL}/delete_history/${historyId}`, { method: "DELETE" });
+        chargerHistorique();
+    } catch (error) {
+        console.error("Erreur lors de la suppression :", error);
+    }
+}
 
-// Initialisation
+// Modifier une entrée (placeholder pour plus tard)
+function modifierHistorique(historyId) {
+    alert(`Fonction modifier à implémenter pour l'ID : ${historyId}`);
+}
+
+// Lancer au chargement de la page
 document.addEventListener("DOMContentLoaded", chargerHistorique);

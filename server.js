@@ -19,11 +19,14 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.get('/', (req, res) => {
     res.send("Le serveur fonctionne")
 })
-
+// Route pour le tableau de bord
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/files', documentRoutes)
-app.use('/history', adminRoute);
+app.use('/dashboard', adminRoute);
 
 
 app.get('/', (_, res) => {
