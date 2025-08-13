@@ -1,16 +1,52 @@
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-  event.preventDefault(); // Stoppe le rechargement automatique
+const loginForm = document.getElementById("loginForm");
+const errorLogin = document.getElementById("errorLogin");
 
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+if (loginForm) {
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  if (!email || !password) {
-    alert("Merci de remplir tous les champs.");
-    return;
-  }
+    // Récupération et nettoyage des champs
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-  console.log("Email :", email);
-  console.log("Mot de passe :", password);
+    // Vérification des champs vides
+    if (!email || !password) {
+      errorLogin.textContent = "Veuillez remplir tous les champs";
+      errorLogin.style.display = "block";
+      return;
+    }
 
-  // Ici, envoie les données à ton serveur, par exemple avec fetch
-});
+    const data = { email, password };
+
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      if (res.ok && result.token) {
+        // Stockage du token
+        localStorage.setItem("token", result.token);
+
+        // Redirection vers la page home
+        window.location.href = "home.html";
+      } else if (res.status === 404) {
+        errorLogin.textContent = "Utilisateur non trouvé";
+        errorLogin.style.display = "block";
+      } else if (res.status === 401) {
+        errorLogin.textContent = "Mot de passe incorrect";
+        errorLogin.style.display = "block";
+      } else {
+        errorLogin.textContent = "Erreur dans l'identifiant ou le mot de passe";
+        errorLogin.style.display = "block";
+      }
+    } catch (error) {
+      console.error("Erreur de connexion :", error);
+      errorLogin.textContent = "Une erreur est survenue. Veuillez réessayer.";
+      errorLogin.style.display = "block";
+    }
+  });
+}
