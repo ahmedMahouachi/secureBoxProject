@@ -6,7 +6,6 @@ const History = require("../models/History");
 
 /**
  * Récupère tout l'historique lié à un utilisateur spécifique.
- * Exemple req postman : http://localhost:3000/history/get_history/689b63b4cfde2e1b8d3498a2
  * 
  * @param {Express.Request} req  requête d'Express avec l'ID utilisateur (req.params.userId)
  * @param {Express.Response} res  réponse d'Express utilisé pour renvoyer le tableau d'historique ou une erreur.
@@ -15,8 +14,8 @@ const History = require("../models/History");
  */
 const getHistory = async (req, res) => { 
     try {
-        const reqUserId = req.params.userId;
-        const history = await History.find({userId: reqUserId });
+        const historyUserId = req.user.id;
+        const history = await History.find({userId: historyUserId });
 
         return res.json(history);
     } catch (err) {
@@ -26,7 +25,6 @@ const getHistory = async (req, res) => {
 
 /**
  * Récupère un enregistrement d'historique spécifique par son identifiant unique `_id`.
- * Exemple req postman : http://localhost:3000/history/get_history_by_id/689b63b4cfde2e1b8d3498b0
  * 
  * @param {Express.Request} req L'objet de requête Express contenant l'ID d'historique dans `req.params.historyId`.
  * @param {Express.Response} res L'objet de réponse Express utilisé pour renvoyer le document trouvé ou une erreur.
@@ -47,7 +45,7 @@ const getHistoryById = async (req, res) => {
 
 const createHistoryById = async (req, res) => {
     try {
-        const historyUserId = req.params.userId;
+        const historyUserId = req.user.id;
         const historyRoute = req.body.route;
         const historyAdresseIP = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress || "0.0.0.0";
 
@@ -81,6 +79,7 @@ const deleteHistory = async (req, res) =>{
     res.status(204).send();
 }
 
+/*
 //A vérifié
 const updateHistory = async (req, res) => {
     const historyId = req.params.historyId;
@@ -97,12 +96,17 @@ const updateHistory = async (req, res) => {
     history = await History.findOneAndUpdate(filter, update);
     
     res.status(201).json(history);
-};
+};*/
+
+//------------------------
+//          User
+//------------------------
+
+
 
 module.exports = {
     getHistoryById,
     getHistory,
     createHistoryById,
-    deleteHistory,
-    updateHistory
+    deleteHistory
 };
