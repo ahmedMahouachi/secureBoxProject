@@ -11,6 +11,7 @@ exports.createDocument = async (req, res) => {
       return res.status(400).json({ message: "Aucun fichier uploadé" });
     }
 
+    //Créer un nouveau document dans la base 
     const newDocument = new Document({
       userId,
       fileName: req.file.originalname,
@@ -27,7 +28,7 @@ exports.createDocument = async (req, res) => {
   }
 };
 
-// 📌 Récupérer tous les documents
+// Récupérer tous les documents
 exports.getDocuments = async (req, res) => {
   try {
     const documents = await Document.find().populate("userId", "name email");
@@ -51,6 +52,8 @@ exports.getDocumentById = async (req, res) => {
     res.status(500).json({ message: "Erreur lors de la récupération" });
   }
 };
+
+//UPDATE
 
 // Mettre à jour un document (remplacer fichier ou infos)
 exports.updateDocument = async (req, res) => {
@@ -79,7 +82,7 @@ exports.updateDocument = async (req, res) => {
   }
 };
 
-// 📌 Supprimer un document
+// Supprimer un document
 exports.deleteDocument = async (req, res) => {
   try {
     const document = await Document.findById(req.params.id);
@@ -98,7 +101,42 @@ exports.deleteDocument = async (req, res) => {
   }
 };
 
-// 📌 Fonction utilitaire : détecter le type de fichier
+// Renommer un document
+exports.renameDocument = async (req, res) => {
+  try {
+    const { newName } = req.body;
+
+    // Vérifier que le nouveau nom est fourni
+    if (!newName) {
+      return res.status(400).json({ message: "Le nouveau nom est requis" });
+    }
+
+    const document = await Document.findById(req.params.id);
+    if (!document) {
+      return res.status(404).json({ message: "Document non trouvé" });
+    }
+
+    const oldPath = document.filePath; // chemin actuel du fichier
+    const newFileName = newName + path.extname(document.fileName); // nouveau nom avec extension
+    const newPath = path.join(path.dirname(oldPath), newFileName); // chemin complet avec le nouveau nom
+
+    // Renommer le fichier sur le disque
+    fs.renameSync(oldPath, newPath);
+
+    // Mettre à jour la base de données
+    document.fileName = newFileName;
+    document.filePath = newPath;
+    await document.save();
+
+    res.status(200).json({ message: "Fichier renommé avec succès", document });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors du renommage" });
+  }
+};
+
+
+// Fonction utilitaire : détecter le type de fichier
 function detectFileType(mimeType) {
   if (mimeType.startsWith("image/")) return "image";
   if (mimeType === "application/pdf") return "pdf";
