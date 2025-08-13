@@ -42,9 +42,8 @@ main {
 }
 
 main section {
-    padding: 3rem 2rem;
-    max-width: 1000px;
-    margin: 100px  /*centrage horizontal*/;
+    margin: 0 auto;
+    width: 550px;
     background-color: #ffffff;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     margin-bottom: 2rem;
@@ -54,7 +53,7 @@ main section {
     align-items: center;
     gap: 8px;
     justify-content: center;
-    transition: box-shadow 0.3s ease; /* déplacer transition ici pour cohérence */
+    transition: box-shadow 0.3s ease; 
 }
 
 
@@ -64,25 +63,31 @@ main section:hover {
 
 main{
 
-    margin: 20px;
-    color: #398166;
    
+    margin:70px;
+    color: #398166;
     font-size: 50px;
     text-align: center;
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
 
+section{
+    margin-top:30px;
+}
+
 /* --- PARAGRAPHES --- */
 section p {
     color: #398166;
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 12px;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
     line-height: 1.7;
     font-weight: bolder;
 }
 
-
+p{
+    margin:10px;
+}
 a {
   color: #398166;
   text-decoration: none; /* si tu veux enlever le soulignement par défaut */
@@ -104,7 +109,7 @@ input {
     padding: 0.7rem;
     border: 1px solid #398166;
     border-radius: 8px;
-    margin-bottom: 1rem; 
+    margin: 20px; 
     outline: none;
     transition: border-color 0.3s ease;
     margin-right: 0;   
@@ -124,6 +129,7 @@ button {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin: 20px;
 }
 
 button:hover {
