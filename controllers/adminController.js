@@ -1,4 +1,5 @@
 const History = require("../models/History");
+const User = require("../models/user");
 
 //--------------------------------
 //    Gestion des historiques
@@ -102,11 +103,15 @@ const updateHistory = async (req, res) => {
 //          User
 //------------------------
 
-
+const getAllUser = async (req, res) => {
+    const users = await User.find({role: "client"});
+    res.status(200).json(users);
+}
 
 module.exports = {
     getHistoryById,
     getHistory,
     createHistoryById,
-    deleteHistory
+    deleteHistory,
+    getAllUser
 };
