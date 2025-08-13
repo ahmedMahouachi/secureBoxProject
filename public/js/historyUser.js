@@ -15,9 +15,9 @@ async function chargerHistorique() {
             const tr = document.createElement("tr");
 
             tr.innerHTML = `
-                <td data-label="Utilisateur">${historique.userId || "Inconnu"}</td>
+                <td data-label="Utilisateur">${historique.userId || ""}</td>
                 <td data-label="Action">${historique.action || ""}</td>
-                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : "Date inconnue"}</td>
+                <td data-label="Date">${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : ""}</td>
                 <td data-label="Détails">
                     Route : ${historique.route || ""}<br>
                     Méthode : ${historique.method || ""}<br>
@@ -30,6 +30,7 @@ async function chargerHistorique() {
                     <button class="supprimer" onclick="supprimerHistorique('${historique._id}')">Supprimer</button>
                 </td>
             `;
+            
 
             tbody.appendChild(tr);
         }
