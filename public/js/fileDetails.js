@@ -10,11 +10,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('token')
-        window.location.href = ('login.html')
-  })
-
   //const token = localStorage.getItem('token')
   if(!token) {
         window.location.href = ('login.html')
