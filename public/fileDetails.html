@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détails du fichier - Gestion des Fichiers</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+  <!-- Barre de navigation -->
+  <nav>
+    <div class="nav-left">
+      Utilisateur : <strong>John Doe</strong>
+    </div>
+    <div class="nav-right">
+      <a href="/home.html">Accueil</a>
+      <a href="/logout">Déconnexion</a>
+    </div>
+    <div class="clear"></div>
+  </nav>
+
+  <main>
+    <h2>Détails du fichier</h2>
+
+    <!-- Affichage des informations du fichier -->
+    <p><strong>Nom du document :</strong> <span id="fileName">rapport.pdf</span></p>
+
+    <!-- Zone de visualisation -->
+    <h3>Aperçu du document :</h3>
+    <iframe src="/uploads/rapport.pdf" width="100%" height="600px"></iframe>
+
+    <!-- Formulaire pour renommer -->
+    <h3>Renommer le document</h3>
+    <form id="renameForm" method="post" action="/api/files/rename">
+      <input type="hidden" name="oldName" value="rapport.pdf" />
+
+      <label for="newName">Nouveau nom :</label>
+      <input type="text" id="newName" name="newName" required />
+
+      <button type="submit">Renommer</button>
+    </form>
+  </main>
+
+</body>
+</html>

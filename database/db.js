@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 async function connectDb(uri) {
     if (!uri) {
         throw Error('MONGOURI manquant')
@@ -13,5 +14,6 @@ async function connectDb(uri) {
         
     })
 }
+
 
 module.exports = {connectDb};
