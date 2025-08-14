@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const res = await fetch(`/api/files/${fileId}/rename`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"},
         body: JSON.stringify({ newName })
       });
 
