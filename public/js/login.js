@@ -36,7 +36,7 @@ if (loginForm) {
         if (role === "client") {
           window.location.href = "home.html";
         } else {
-          window.location.href = "historyUser.html";
+          window.location.href = "dashboard.html";
         }
       } else if (res.status === 404) {
         errorLogin.textContent = "Utilisateur non trouvé";
