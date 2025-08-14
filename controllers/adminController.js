@@ -1,5 +1,7 @@
 const History = require("../models/History");
 const User = require("../models/user");
+const mongoose = require("mongoose");
+const sanitizeHtml = require('sanitize-html');
 
 //--------------------------------
 //    Gestion des historiques
@@ -33,24 +35,33 @@ const getHistory = async (req, res) => {
  * @returns {Promise} Renvoie au format Json l'enregistrement de l'historique spécifique ou l'erreur rencontrée
  */
 const getHistoryById = async (req, res) => {
+    try {
     const historyId = req.params.historyId;
 
-    const history = await History.findById(historyId);
+    //L'id ne correspond pas à un id type de mongoose
+    if (!mongoose.Types.ObjectId.isValid(historyId)) {
+        return res.status(400).json({ message: "ID invalide" });
+    }
 
-    if (!history) {
+    const history = await History.findById(historyId);
+    if (!history || history === null) {
         return res.status(404).json({ message: "Enregistrement non trouvé" });
     }
 
     return res.json(history);
+    } catch (err) {
+        // Sécurité : capture toute autre erreur de cast
+        return res.status(500).json({ message: "Erreur serveur", error: err.message });
+    }
 };
 
 const createHistoryById = async (req, res) => {
     try {
-        const historyUserId = req.user.id;
-        const historyRoute = req.body.route;
-        const historyAction = req.body.action;
-        const historyMethod = req.body.method;
-        const historyAdresseIP = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress || "0.0.0.0";
+        const historyUserId = sanitizeHtml(req.user.id);
+        const historyRoute = sanitizeHtml(req.body.route);
+        const historyAction = sanitizeHtml(req.body.action);
+        const historyMethod = sanitizeHtml(req.body.method);
+        const historyAdresseIP = sanitizeHtml(req.adresseIP);
 
         const history = await History.create({
             userId : historyUserId,
@@ -69,38 +80,56 @@ const createHistoryById = async (req, res) => {
 };
 
 const deleteHistory = async (req, res) =>{
-    const historyId = req.params.historyId;
+    try {
+        const historyId = req.params.historyId;
 
-    const history = await History.findById(historyId);
+        //L'id ne correspond pas à un id type de mongoose
+        if (!mongoose.Types.ObjectId.isValid(historyId)) {
+            return res.status(400).json({ message: "ID invalide" });
+        }
+        const history = await History.findById(historyId);
 
-    if (!history) {
-        return res.status(404).json({ message: "Enregistrement non trouvé" });
+        if (!history || history === null) {
+            return res.status(404).json({ message: "Enregistrement non trouvé" });
+        }
+
+        await history.deleteOne();
+        res.status(204).send();
+    } catch (err) {
+        return res.status(500).json({ message: "Erreur serveur", error: err.message });
     }
-
-    await history.deleteOne();
-    res.status(204).send();
 }
 
 
 const updateHistory = async (req, res) => {
-    const historyId = req.params.historyId;
+    try{
+        const historyId = req.params.historyId;
 
-    const historyRoute = req.body.route;
-    const historyAction = req.body.action;
-    const historyMethod = req.body.method;
-    const historyAdrIp = req.body.adresseIP;
+        const historyRoute = sanitizeHtml(req.body.route);
+        const historyAction = sanitizeHtml(req.body.action);
+        const historyMethod = sanitizeHtml(req.body.method);
+        const historyAdrIp = sanitizeHtml(req.body.adresseIP);
+        
+        //L'id ne correspond pas à un id type de mongoose
+        if (!mongoose.Types.ObjectId.isValid(historyId)) {
+            return res.status(400).json({ message: "ID invalide" });
+        }   
+        
+        const history = await History.findById(historyId);
 
-    const history = await History.findById(historyId);
-    if (!history) {
-        return res.status(404).json({ message: "Enregistrement non trouvé" });
+        if (!history) {
+            return res.status(404).json({ message: "Enregistrement non trouvé" });
+        }
+        
+        const filter = {_id: historyId};
+        const update = {route: historyRoute, action: historyAction, method: historyMethod, adresseIP:historyAdrIp};
+
+        const resHistory = await History.findOneAndUpdate(filter, update, {new : true});
+        
+        res.status(201).json(resHistory);
+    } catch (error) {
+        res.status(500).json({ message: "Erreur serveur", error: error.message });
     }
-    
-    const filter = {_id: historyId};
-    const update = {route: historyRoute, action: historyAction, method: historyMethod, adresseIP:historyAdrIp};
-
-    const resHistory = await History.findOneAndUpdate(filter, update, {new : true});
-    
-    res.status(201).json(resHistory);
 };
 
 //------------------------
@@ -108,13 +137,22 @@ const updateHistory = async (req, res) => {
 //------------------------
 
 const getAllUser = async (req, res) => {
-    const users = await User.find({role: "client"});
-    res.status(200).json(users);
+    try {
+        const users = await User.find({role: "client"});
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: "Erreur serveur", error: error.message });
+    }
 }
 
 const deleteUserById = async (req, res) => {
     try {
         const userId = req.params.id;
+        
+        //L'id ne correspond pas à un id type de mongoose
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "ID invalide" });
+        }   
 
         // Vérifier si l'utilisateur existe
         const user = await User.findById(userId);
