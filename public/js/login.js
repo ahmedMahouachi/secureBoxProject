@@ -1,12 +1,18 @@
 const loginForm = document.getElementById("loginForm");
 const errorLogin = document.getElementById("errorLogin");
-let googleButton = document.getElementById('google-auth');
+let googleButton = document.getElementById("google-auth");
 
+const params = new URLSearchParams(window.location.search)
+token = params.get('token')
+if (token){
+  localStorage.setItem("token",token)
+  window.location.href = 'home.html'
+}
 
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
- 
+
     // Récupération et nettoyage des champs
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -18,24 +24,27 @@ if (loginForm) {
       return;
     }
 
-    const data = { email, password };
-
     try {
       const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ email, password }),
       });
 
       const result = await res.json();
+      console.log("Réponse API :", result); // 🔍 Pour vérifier la réponse backend
 
       if (res.ok && result.token) {
         // Stockage du token
         localStorage.setItem("token", result.token);
 
-        // Redirection vers la page d'accueil
-        window.location.href = "home.html";
-
+        // Vérification sécurisée du rôle (avec gestion des majuscules)
+        const role = result.role?.toLowerCase();
+        if (role === "client") {
+          window.location.href = "home.html";
+        } else {
+          window.location.href = "dashboard.html";
+        }
       } else if (res.status === 404) {
         errorLogin.textContent = "Utilisateur non trouvé";
         errorLogin.style.display = "block";
@@ -54,6 +63,8 @@ if (loginForm) {
   });
 }
 
-googleButton.addEventListener('click', (e) => {
-  window.location.href = 'http://localhost:3000/api/auth/google'  
-});
+if (googleButton) {
+  googleButton.addEventListener("click", () => {
+    window.location.href = "http://localhost:3000/api/auth/google";
+  });
+}
