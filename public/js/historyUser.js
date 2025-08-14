@@ -62,7 +62,7 @@ async function enregistrerModification(historyId, bouton) {
     };
 
     try {
-        await fetch(`${API_URL}/update_history/${historyId}`, {
+        const res = await fetch(`${API_URL}/update_history/${historyId}/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -70,15 +70,29 @@ async function enregistrerModification(historyId, bouton) {
             },
             body: JSON.stringify(body)
         });
-        chargerHistorique();
+
+        if (!res.ok) {
+            const errText = await res.text();
+            throw new Error(errText);
+        }
+
+        // Mettre à jour la ligne sans recharger tout
+        tds[1].innerText = body.action;
+        tds[3].innerText = body.route;
+        tds[4].innerText = body.method;
+        tds[5].innerText = body.adresseIP;
+        tds[6].innerHTML = `<button onclick="modifierHistorique('${historyId}', this)">Modifier</button>`;
+
     } catch (err) {
         console.error("Erreur modification", err);
+        alert("Impossible de modifier : " + err.message);
     }
 }
 
-// Supprimer une entrée
+
+// Supprimer une historique
 async function supprimerHistorique(historyId) {
-    if (!confirm("Supprimer cette entrée ?")) return;
+    if (!confirm("Supprimer cette historque ?")) return;
 
     try {
         await fetch(`${API_URL}/delete_history/${historyId}`, {
