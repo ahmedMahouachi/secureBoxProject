@@ -20,16 +20,20 @@ exports.login = async (req, res) => {
   }
 
   const token = jwt.sign(
-    { id: user._id, role: user.role },
+    { id: user._id, role: user.role, prenom: user.firstName },
     process.env.JWT_SECRET,
     {
       expiresIn: "1h",
     }
   );
 
-  res.json({ succes: true, message: "vous etes connecté", token });
+  res.json({
+    succes: true,
+    message: "vous etes connecté",
+    token,
+    role: user.role,
+  });
 };
-
 exports.register = async (req, res) => {
   const { nom, prenom, email, password } = req.body;
 
@@ -76,4 +80,50 @@ exports.me = async (req, res) => {
     role: user.role,
     createdAt: user.createdAt,
   });
+};
+
+exports.googleAuth = (req, res) => {
+    if (!req.user)
+        return res
+            .status(401)
+            .json({ success: false, message: "Authentication echouée." });
+    const token = jwt.sign(
+        {
+            id: req.user._id,
+            role: req.user.role,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "2h" }
+    );
+
+    res.redirect(`/home.html?token=${token}`);
+};
+
+
+exports.registerAdmin = async (req, res) => {
+  const { nom, prenom, email, password } = req.body;
+
+  if (!nom || !prenom || !email || !password)
+    return res.json({
+      success: false,
+      message: "Tous les champs sont requis.",
+    });
+
+  const alreadyExists = await User.findOne({ email });
+
+  if (alreadyExists)
+    return res.send({ success: false, message: "Email déjà utilisé." });
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = new User({
+    firstName: prenom,
+    lastName: nom,
+    email: email,
+    password: hashedPassword,
+    role: "admin",
+  });
+  await user.save();
+
+  res.status(201).json({ success: true, message: "Administrateur créé." });
 };
