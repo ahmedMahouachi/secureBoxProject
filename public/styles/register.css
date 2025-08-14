@@ -1,0 +1,114 @@
+/* Reset minimal */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Page */
+body{
+  font-family: 'Segoe UI','Helvetica Neue',sans-serif;
+  line-height: 1.6;
+  color: #1a1a1a;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+
+  /* structure colonne comme login */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Barre titre identique à login */
+header{
+  background-color: #398166;   /* même vert que login.css */
+  color: #fff;
+  padding: 15px 10px;
+  text-align: center;
+}
+header h1{
+  font-size: 2.2rem;
+  margin-bottom: .8rem;
+  text-shadow: 1px 1px 2px rgba(255,255,255,.8);
+  font-family: Arial, sans-serif;
+  font-style: italic;
+}
+
+/* Zone centrale */
+main{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+/* Carte formulaire (comme la carte login) */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 550px;
+  min-height: 400px; /* même hauteur que connexion */
+  padding: 60px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+  border-radius: 22px;
+  background: #fff;
+  margin-top: -150px; /* valeur négative pour remonter le bloc */
+}
+
+/* Champs */
+form{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+input{
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  outline: none;
+  transition: box-shadow .15s, border-color .15s;
+}
+input:focus{
+  border-color: #398166;
+  box-shadow: 0 0 0 3px rgba(57,129,102,.15);
+}
+
+/* Boutons */
+button{
+  background: #398166;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:hover{ background: #2f6c56; }
+
+/* Lien sous le formulaire */
+.helper{
+  margin-top: 10px;
+  text-align: center;
+  font-size: .95rem;
+}
+.helper a{
+  color: #398166;
+  text-decoration: none;
+}
+.helper a:hover{ text-decoration: underline; }
+
+/* Zone d'alerte */
+#alert{ text-align: center; margin-bottom: 10px; font-size: .95rem; }
+.hidden{ display: none; }
+
+/* Footer (si tu en as besoin) */
+footer {
+    background-color: #398166;
+    color: #f1faee;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+/* Responsive */
+@media (max-width: 420px){
+  .card{ width: 100%; }
+}
