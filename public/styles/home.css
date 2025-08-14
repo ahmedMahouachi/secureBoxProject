@@ -100,6 +100,26 @@ button:hover {
   background-color: #0056b3;
 }
 
+.preview-container { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 15px; 
+  margin-top: 20px; 
+}
+
+.preview-item img {
+  border: 1px solid #ccc; 
+  padding: 5px; 
+  width: 200px; 
+}
+
+.preview-item img {
+  max-width: 100%; 
+  height: auto; 
+  display: block; 
+  margin-bottom: 5px; 
+}
+
 /* Tableau des fichiers */
 table {
   width: 100%;
@@ -114,7 +134,8 @@ thead {
 th, td {
   padding: 12px;
   border: 1px solid #ccc;
-  text-align: left;
+  text-align: center;       /* centre horizontalement */
+  vertical-align: middle;   /* centre verticalement */
 }
 
 tbody tr:nth-child(even) {
@@ -128,4 +149,26 @@ tbody tr:nth-child(odd) {
 /* Lignes vides */
 tbody tr:empty td {
   background-color: #ffffff;
+}
+
+/* Colonne "Type de fichier" plus étroite */
+th:first-child,
+td:first-child {
+  width: 80px;
+}
+
+/* Centrage des icônes dans la colonne "Type de fichier" */
+td:first-child img {
+  display: block;
+  margin: 0 auto;
+  max-height: 50px;
+  max-width: 50px;
+}
+
+/* Message "Aucun document" */
+.table-empty-message {
+  text-align: center;
+  font-style: italic;
+  color: #666;
+  background-color: #fcfcfc;
 }

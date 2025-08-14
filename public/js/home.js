@@ -1,23 +1,29 @@
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRiNTIwNzFkN2ZlYmM1YjZmY2RhZSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNjkyNTMsImV4cCI6MTc1NTE3Mjg1M30.TJLxff2GuHokfpvwH1jSO-Il6NpFXZuKmypaF7vDiSc";
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRhMWI4NmQwMWM5YWQ5MGQ0ZWI1MyIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNzEwMzksImV4cCI6MTc1NTE3NDYzOX0.CwFHSHA9DLJ__0_fOVvRe56ANQpyKYEsEXitLwYnVoI"
+
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const logoutButton = document.getElementById('logout');
+  const logoutButton = document.getElementById('logout') 
+  const previewContainer = document.getElementById("previewContainer");
+  //const token = localStorage.getItem('token')
+
   const fileInput = document.getElementById("fileInput");
-  const previewImage = document.getElementById("previewImage");
-  const previewText = document.getElementById("previewText");
+
 
   console.log('Le token recuperé depuis le local storage est :', token);
+
 
   logoutButton.addEventListener('click', () => {
     localStorage.removeItem('token');
     window.location.href = 'login.html';
   });
 
+
   if (!token) {
     alert('Accès refusé');
     window.location.href = 'login.html';
     return;
   }
+
 
   try {
     const res = await fetch("/api/auth/me", {
@@ -36,28 +42,77 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("userName").textContent = "Inconnu";
   }
 
-  fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) return;
 
-    if (file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        previewImage.src = e.target.result;
-        previewImage.style.display = "block";
-        previewText.style.display = "none";
-      };
-      reader.readAsDataURL(file);
-    } else {
-      previewImage.style.display = "none";
-      previewText.textContent = `Fichier sélectionné : ${file.name} (${Math.round(file.size / 1024)} KB)`;
-      previewText.style.display = "block";
-    }
+  fileInput.addEventListener("change", function (event) {
+    
+    //const file = fileInput.files[0];
+    const files = event.target.files
+    previewContainer.innerHTML = '';
+
+    Array.from(files).forEach(file => {
+      const previewItem = document.createElement('div');
+      previewItem.classList.add('preview-item');
+
+      const fileType = file.type;    
+
+      if(fileType.startsWith('image/')) {
+        // Preview des images
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        //img.style.width = '100%'
+        img.style.height = '200px'
+        previewItem.appendChild(img);
+        const caption = document.createElement('div')
+        caption.textContent = file.name;
+        previewItem.appendChild(caption);
+      } else if(fileType === 'application/pdf') {
+        // Preview des PDF
+        const embed = document.createElement('embed');
+        embed.src = URL.createObjectURL(file) + '#toolbar=0&navpanes=0&scrollbar=0'
+        embed.type = 'application/pdf'
+        embed.with = '100%'
+        embed.height = '200px'
+        previewItem.appendChild(embed)
+        const caption = document.createElement('div')
+        caption.textContent = file.name;
+        previewItem.appendChild(caption);
+      } else if(
+        file.name.endsWith('.doc') || file.name.endsWith('.docx') ||
+        file.name.endsWith('.xls') || file.name.endsWith('.xlsx') ||
+        file.name.endsWith('.txt')
+      ) {
+        // Icone pour Word, Excel et Text
+        const icon = document.createElement('img')
+        icon.classList.add('file-icon')
+        if (file.name.endsWith('.doc')) {
+          icon.src = '/icons/worddoc.png'
+        } else if(file.name.endsWith('.docx')) {
+          icon.src = '/icons/worddocx.png'
+        } else if(file.name.endsWith('.xls')) {
+          icon.src = '/icons/excelxls.png'
+        } else if(file.name.endsWith('.xlsx')) {
+          icon.src = '/icons/excelxlsx.png'
+        } else if(file.name.endsWith('.txt')) {
+          icon.src = '/icons/text.png'
+        }
+        previewItem.appendChild(icon)
+        const caption = document.createElement('div')
+        caption.textContent = file.name;
+        previewItem.appendChild(caption);
+      }
+      previewContainer.appendChild(previewItem);
+
+    })
+  
+
   });
 
   loadFiles();
 
+
   const uploadForm = document.getElementById("uploadForm");
+
+ 
 
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -70,11 +125,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
+
       const result = await res.json();
 
       if (res.ok) {
         uploadForm.reset();
         loadFiles();
+        previewContainer.innerHTML = '';
         console.log("Fichier uploadé avec succès !");
       } else {
         alert(result.message || "Erreur lors de l'upload");
@@ -82,8 +139,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } catch (err) {
       console.error("Erreur upload :", err);
+
     }
   });
+
+  loadFiles();
 });
 
 function getFileExtension(fileName) {
@@ -103,21 +163,28 @@ function getFileIconByExtension(fileName) {
     xls: "/icons/excelxls.png",
     xlsx: "/icons/excelxlsx.png",
     txt: "/icons/text.png",
-    default: "/icons/file.png"
+
   };
-  return icons[ext] || icons.default;
+  return icons[ext] || "/icons/file.png";
 }
 
 async function loadFiles() {
   if (!token) {
+
     alert('Accès refusé');
     window.location.href = 'login.html';
+
     return;
   }
 
   try {
     const res = await fetch("/api/files/", {
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
+
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+
     });
 
     if (!res.ok) {
@@ -128,18 +195,27 @@ async function loadFiles() {
 
     const files = await res.json();
 
-    if (!Array.isArray(files)) {
-      console.error("Réponse inattendue :", files);
+    const tbody = document.getElementById("fileTableBody");
+
+    tbody.innerHTML = "";
+
+    if (files.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 3;
+      td.textContent = "Aucun document";
+      td.style.textAlign = "center";
+      td.style.fontStyle = "italic";
+      tr.appendChild(td);
+      tbody.appendChild(tr);
       return;
     }
-
-    const tbody = document.getElementById("fileTableBody");
-    tbody.innerHTML = "";
 
     files.forEach(file => {
       const tr = document.createElement("tr");
 
-      // Type (afficher image si c'est une image)
+      // Type
+
       const tdType = document.createElement("td");
       if (file.fileType === "image") {
         const img = document.createElement("img");
@@ -159,13 +235,16 @@ async function loadFiles() {
       }
       tr.appendChild(tdType);
 
+
       // Nom cliquable
+
       const tdName = document.createElement("td");
       const link = document.createElement("a");
       link.href = `/fileDetails.html?id=${file._id}`;
       link.textContent = file.fileName;
       tdName.appendChild(link);
       tr.appendChild(tdName);
+
 
       // Actions (icônes télécharger et supprimer)
       const tdAction = document.createElement("td");
@@ -201,10 +280,13 @@ async function loadFiles() {
       deleteIcon.onclick = () => deleteFile(file._id);
       tdAction.appendChild(deleteIcon);
 
+
       tr.appendChild(tdAction);
 
       tbody.appendChild(tr);
     });
+
+
   } catch (err) {
     console.error("Erreur chargement fichiers:", err);
   }
@@ -220,10 +302,13 @@ function deleteFile(id) {
       "Content-Type": "application/json"
     }
   })
-  .then(res => {
-    if (!res.ok) throw new Error("Erreur suppression");
-    return res.json();
-  })
-  .then(() => loadFiles())
-  .catch(err => console.error(err));
+
+    .then(res => {
+      if (!res.ok) throw new Error("Erreur suppression");
+      return res.json();
+    })
+    .then(() => loadFiles())
+    .catch(err => console.error(err));
 }
+
+

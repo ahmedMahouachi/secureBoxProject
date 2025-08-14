@@ -1,5 +1,6 @@
 token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRiNTIwNzFkN2ZlYmM1YjZmY2RhZSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNjkyNTMsImV4cCI6MTc1NTE3Mjg1M30.TJLxff2GuHokfpvwH1jSO-Il6NpFXZuKmypaF7vDiSc"
 
+
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
   const fileId = params.get("id");
