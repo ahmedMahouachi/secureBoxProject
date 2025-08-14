@@ -1,7 +1,7 @@
 const express = require("express");
 
 const passport = require("passport");
-const { login, register, me, googleAuth } = require("../controllers/authController");
+const { login, register, me, googleAuth, registerAdmin } = require("../controllers/authController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
@@ -26,5 +26,6 @@ router.get(
     }),
     googleAuth
 );
+router.post("/uregisterAdmin", registerAdmin);
 
 module.exports = router;
