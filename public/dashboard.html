@@ -8,6 +8,11 @@
 </head>
 <body>
     <h1>Liste des utilisateurs</h1>
+    
+    <div class="button-container">
+        <button id="openModalBtn">Créer un utilisateur</button>
+    </div>
+
     <table id="usersTable">
         <thead>
             <tr>
@@ -23,6 +28,20 @@
             <!-- Ajout JS -->
         </tbody>
     </table>
+
+     <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Créer un utilisateur</h2>
+            <form id="createUserForm">
+                <input type="text" name="firstName" placeholder="Prénom" required>
+                <input type="text" name="lastName" placeholder="Nom" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <button type="submit">Créer l'utilisateur</button>
+            </form>
+        </div>
+    </div>
 
     <script src="./js/dashboard.js"></script>
 </body>

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const tableBody = document.querySelector("#usersTable tbody");
-
+    
     async function fetchUsers() {
         try {
             const response = await fetch("/dashboard/get_all_user");
@@ -47,6 +47,59 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+
+    /********************************************************************
+     * ********************
+     *                      MODAL CREATE USER
+     *                                        ****************************
+     * *******************************************************************
+     */
+
+    const modal = document.getElementById("userModal");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const closeModal = document.querySelector(".close");
+    const createUserForm = document.getElementById("createUserForm");
+
+    // Afficher la modal
+    openModalBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+    });
+
+    // Fermer la modal
+    closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) modal.style.display = "none";
+    });
+
+    /*
+    createUserForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(createUserForm);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const res = await fetch("/api/auth/registerAdmin", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                alert("Utilisateur créé !");
+                modal.style.display = "none";
+                createUserForm.reset();
+                fetchUsers();
+            } else {
+                const err = await res.json();
+                alert(`Erreur : ${err.message || "Impossible de créer l'utilisateur"}`);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    });*/
 
     fetchUsers();
 });
