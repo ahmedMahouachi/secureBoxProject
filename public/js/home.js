@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   fileInput.addEventListener("change", function (event) {
     
     //const file = fileInput.files[0];
-    const files = event.target.files
+    const files = event.target.files;
     previewContainer.innerHTML = '';
 
     Array.from(files).forEach(file => {
@@ -60,20 +60,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         const img = document.createElement('img');
         img.src = URL.createObjectURL(file);
         //img.style.width = '100%'
-        img.style.height = '200px'
+        img.style.height = '200px';
         previewItem.appendChild(img);
-        const caption = document.createElement('div')
+        const caption = document.createElement('div');
         caption.textContent = file.name;
         previewItem.appendChild(caption);
       } else if(fileType === 'application/pdf') {
         // Preview des PDF
         const embed = document.createElement('embed');
-        embed.src = URL.createObjectURL(file) + '#toolbar=0&navpanes=0&scrollbar=0'
-        embed.type = 'application/pdf'
-        embed.with = '100%'
-        embed.height = '200px'
-        previewItem.appendChild(embed)
-        const caption = document.createElement('div')
+        embed.src = URL.createObjectURL(file) + '#toolbar=0&navpanes=0&scrollbar=0';
+        embed.type = 'application/pdf';
+        embed.with = '100%';
+        embed.height = '200px';
+        previewItem.appendChild(embed);
+        const caption = document.createElement('div');
         caption.textContent = file.name;
         previewItem.appendChild(caption);
       } else if(
@@ -82,16 +82,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         file.name.endsWith('.txt')
       ) {
         // Icone pour Word, Excel et Text
-        const icon = document.createElement('img')
-        icon.classList.add('file-icon')
+        const icon = document.createElement('img');
+        icon.classList.add('file-icon');
         if (file.name.endsWith('.doc')) {
-          icon.src = '/icons/worddoc.png'
+          icon.src = '/icons/worddoc.png';
         } else if(file.name.endsWith('.docx')) {
-          icon.src = '/icons/worddocx.png'
+          icon.src = '/icons/worddocx.png';
         } else if(file.name.endsWith('.xls')) {
-          icon.src = '/icons/excelxls.png'
+          icon.src = '/icons/excelxls.png';
         } else if(file.name.endsWith('.xlsx')) {
-          icon.src = '/icons/excelxlsx.png'
+          icon.src = '/icons/excelxlsx.png';
         } else if(file.name.endsWith('.txt')) {
           icon.src = '/icons/text.png'
         }

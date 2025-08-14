@@ -34,10 +34,10 @@ async function chargerHistorique() {
 
 
 
-            const user = users.find(u => u._id === historique.userId);
-            const userName = user ? `${user.firstName || ""} ` : "Inconnu";
+            const user = users.find(u => u._id === historique.userId)
+            const userName = user ? `${user.firstName || ""} ` : "Inconnu"
             
-
+ 
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>${userName || "Inconnu"}</td>
