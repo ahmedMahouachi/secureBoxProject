@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Historique des actions</title>
-  <link rel="stylesheet" href="./styles/dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Utilisateurs</title>
+    <link rel="stylesheet" href="./styles/dashboard.css">
 </head>
 <body>
-  <h1>Historique des actions</h1>
+    <h1>Liste des utilisateurs</h1>
+    
+    <div class="button-container">
+        <button id="openModalBtn">Créer un utilisateur</button>
+    </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Utilisateur</th>
-        <th>Action</th>
-        <th>Date</th>
-        <th>Détails</th>
-        <th>Modifier</th>
-        <th>Supprimer</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+    <table id="usersTable">
+        <thead>
+            <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Historique</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Ajout JS -->
+        </tbody>
+    </table>
 
-  <script src="./js/dashboard.js"></script>
+     <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Créer un utilisateur</h2>
+            <form id="createUserForm">
+                <input type="text" name="firstName" placeholder="Prénom" required>
+                <input type="text" name="lastName" placeholder="Nom" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <button type="submit">Créer l'utilisateur</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./js/dashboard.js"></script>
 </body>
 </html>

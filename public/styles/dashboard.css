@@ -1,0 +1,160 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f4f6f8;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #007BFF;
+    color: white;
+}
+
+tr:hover {
+    background: #f1f1f1;
+}
+
+.history-link {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #17a2b8;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.history-link:hover {
+    background-color: #138496;
+}
+
+.delete-btn {
+    background-color: #dc3545; 
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #c82333; 
+}
+
+/****************************
+******   modal css   ********
+****************************/
+
+.button-container {
+    display: flex;
+    justify-content: flex-end; 
+    margin-bottom: 15px;       
+}
+
+#openModalBtn {
+    background-color: #4CAF50; 
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-right: 10vw;
+    transition: background-color 0.3s ease;
+}
+
+#openModalBtn:hover {
+    background-color: #45a049; 
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* fond semi-transparent */
+    font-family: Arial, sans-serif;
+}
+
+.modal-content {
+    background-color: #fff; /* blanc comme le tableau */
+    margin: 10% auto;
+    padding: 20px 30px;
+    border-radius: 8px; /* arrondi similaire au tableau */
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* ombre douce */
+    border: 1px solid #ddd; /* bordure claire comme le tableau */
+    transition: all 0.3s ease;
+}
+
+.modal h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: #000;
+}
+
+#userModal input {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    border: 1px solid #ccc; /* bordure comme le tableau */
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+#userModal button[type="submit"] {
+    background-color: #4CAF50; /* vert tableau */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+}
+
+#userModal button[type="submit"]:hover {
+    background-color: #45a049;
+}

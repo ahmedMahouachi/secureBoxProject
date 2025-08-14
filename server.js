@@ -7,6 +7,7 @@ const path = require('path')
 require('dotenv').config();
 const { connectDb } = require("./database/db");
 const authRoutes = require('./routes/authRoutes');
+
 const User = require('./models/user');
 
 // importations pour google auth
@@ -37,15 +38,26 @@ async (accessToken, refreshToken, profile, done) => {
 }
 ));
 
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
 app.use(passport.initialize());
+
+
+
+
+
+// Route pour le tableau de bord
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
 
 // routes
 app.use('/api/auth', authRoutes);
 app.use('/api/files', documentRoutes)
-app.use('/history', adminRoute);
+app.use('/dashboard', adminRoute);
 
 
 app.get('/', (_, res) => {
