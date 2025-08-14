@@ -27,9 +27,16 @@ async function chargerHistorique() {
         tbody.innerHTML = "";
 
         for (const historique of historiques) {
+
+
+            const historiqueUser = users.find(u => u._id === historique.userId);
+            const userName = historiqueUser ? `${historiqueUser.firstName || ""} ${historiqueUser.lastName || ""}` : "Inconnu";
+
+
             const user = users.find(u => u._id === historique.userId);
             const userName = user ? `${user.firstName || ""} ${user.lastName || ""}` : "Inconnu";
             
+
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>${userName || "Inconnu"}</td>
