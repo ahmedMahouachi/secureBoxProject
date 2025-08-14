@@ -1,114 +1,112 @@
-/* ====== RESET DE BASE ====== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --bg: #f9fafb;
+  --border: #e5e7eb;
+  --text: #111827;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #f0f2f5;
-  color: #2c3e50;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
   padding: 20px;
-  line-height: 1.6;
 }
 
-/* ====== TITRE ====== */
 h1 {
   text-align: center;
-  margin-bottom: 25px;
-  color: #34495e;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
-/* ====== TABLE ====== */
+/* Conteneur scroll horizontal */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Table */
 table {
-  width: 90%;            /* largeur réduite */
-  max-width: 900px;      /* limite pour éviter le scroll horizontal */
-  margin: 0 auto;        /* centre la table */
-  border-collapse: separate;
-  border-spacing: 0;
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 thead {
-  background-color: #2980b9;
+  background-color: var(--primary);
   color: #fff;
-  font-weight: 600;
 }
 
-th, td {
-  padding: 10px 12px;    /* plus compact */
+thead th {
+  padding: 12px 10px;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-  transition: background 0.3s;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-tbody tr:hover {
-  background-color: #f7f9fc;
+tbody tr {
+  border-bottom: 1px solid var(--border);
 }
 
-/* ====== BOUTONS ====== */
+tbody tr:nth-child(even) {
+  background-color: #f3f4f6;
+}
+
+td {
+  padding: 10px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Boutons */
 button {
-  padding: 8px 14px;      /* légèrement réduit */
+  padding: 6px 10px;
+  font-size: 0.9rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: background 0.2s ease;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-button.supprimer {
-  background-color: #e74c3c;
+button[onclick^="modifierHistorique"] {
+  background-color: var(--primary);
   color: #fff;
 }
-
-button.modifier {
-  background-color: #f1c40f;
-  color: #fff;
+button[onclick^="modifierHistorique"]:hover {
+  background-color: var(--primary-hover);
 }
 
-/* ====== RESPONSIVE ====== */
+button[onclick^="supprimerHistorique"] {
+  background-color: var(--danger);
+  color: #fff;
+}
+button[onclick^="supprimerHistorique"]:hover {
+  background-color: var(--danger-hover);
+}
+
+/* Inputs inline editing */
+td input {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
+  .table-wrapper {
+    overflow-x: auto;
   }
-
-  thead {
-    display: none;
-  }
-
-  tr {
-    margin-bottom: 14px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: #fff;
-    padding: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-
-  td {
-    border: none;
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-  }
-
-  td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #555;
+  table {
+    min-width: 600px;
   }
 }

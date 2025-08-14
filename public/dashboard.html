@@ -7,10 +7,22 @@
     <link rel="stylesheet" href="./styles/dashboard.css">
 </head>
 <body>
+
+    <nav>
+    <div class="nav-left">
+      Utilisateur : <strong id="userName"></strong>
+    </div>
+    <div class="nav-right">
+      <button id="logout">Déconnexion</button>
+    </div>
+    <div class="clear"></div>
+  </nav>
+
+
     <h1>Liste des utilisateurs</h1>
 
     <div class="button-container">
-        <button id="openModalBtn" >Créer un utilisateur</button>
+        <button id="openModalBtn">Créer un utilisateur</button>
         Filtre rôle :
         <button id="showClientsBtn" class="button-filter">Clients</button>
         <button id="showAdminsBtn" class="button-filter">Admins</button>
@@ -33,7 +45,7 @@
         </tbody>
     </table>
 
-     <div id="userModal" class="modal">
+    <div id="userModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Créer un utilisateur</h2>
