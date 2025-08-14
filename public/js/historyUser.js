@@ -11,7 +11,10 @@ let users = []; // tableau pour stocker tous les utilisateurs
 async function fetchUsersList() {
     try {
         const res = await fetch("/dashboard/get_all_user");
+        
         users = await res.json(); // on garde tout dans un tableau
+        console.log(users);
+
     } catch (err) {
         console.error("Erreur récupération users", err);
     }
@@ -32,7 +35,7 @@ async function chargerHistorique() {
 
 
             const user = users.find(u => u._id === historique.userId);
-            const userName = user ? `${user.firstName || ""} ${user.lastName || ""}` : "Inconnu";
+            const userName = user ? `${user.firstName || ""} ` : "Inconnu";
             
 
             const tr = document.createElement("tr");
@@ -109,7 +112,6 @@ async function enregistrerModification(historyId, bouton) {
         alert("Impossible de modifier : " + err.message);
     }
 }
-
 
 // Supprimer une historique
 async function supprimerHistorique(historyId) {
