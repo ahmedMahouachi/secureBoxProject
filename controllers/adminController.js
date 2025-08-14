@@ -108,7 +108,7 @@ const updateHistory = async (req, res) => {
 //------------------------
 
 const getAllUser = async (req, res) => {
-    const users = await User.find({role: "client"});
+    const users = await User.find(); 
     res.status(200).json(users);
 }
 
