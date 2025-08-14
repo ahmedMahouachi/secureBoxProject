@@ -1,4 +1,4 @@
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRhMWI4NmQwMWM5YWQ5MGQ0ZWI1MyIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNzEwMzksImV4cCI6MTc1NTE3NDYzOX0.CwFHSHA9DLJ__0_fOVvRe56ANQpyKYEsEXitLwYnVoI"
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRhMWI4NmQwMWM5YWQ5MGQ0ZWI1MyIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNzczNjksImV4cCI6MTc1NTE4MDk2OX0.SerIx9ddTVqaAnfwZzi6Gv2_7zZhExvuajIjTTsZ_mA"
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -135,11 +135,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Fichier uploadé avec succès !");
       } else {
         alert(result.message || "Erreur lors de l'upload");
-        window.location.href = "login.html";
       }
     } catch (err) {
       console.error("Erreur upload :", err);
-
     }
   });
 

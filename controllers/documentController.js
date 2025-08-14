@@ -1,16 +1,11 @@
 const Document = require("../models/Document");
 const fs = require("fs");
 const path = require("path");
-const User = require('../models/user')
-const jwt = require('jsonwebtoken');
 
 // Créer un document
 exports.createDocument = async (req, res) => {
   try {
-    const userId = req.user.id;
-    //const userId = "66b4d97b8d2a4a8d2a4a8d2a"; 
-    console.log(userId);
-    
+    const userId = req.user.id;  
 
     if (!req.file) {
       return res.status(400).json({ message: "Aucun fichier uploadé" });
@@ -114,7 +109,6 @@ exports.renameDocument = async (req, res) => {
     res.status(500).json({ message: "Erreur lors du renommage" });
   }
 };
-
 
 // Fonction utilitaire : détecter le type de fichier
 function detectFileType(mimeType) {
