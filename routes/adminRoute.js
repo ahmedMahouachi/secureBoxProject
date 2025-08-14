@@ -23,7 +23,7 @@ router.put("/update_history/:historyId",authMiddleware, createHistoryMiddleware,
 
 //Route User
 router.get("/get_all_user",getAllUser);
-router.delete("/delete_user_by_id", deleteUserById);
+router.delete("/delete_user_by_id/:id", deleteUserById);
 
 
 module.exports = router;
