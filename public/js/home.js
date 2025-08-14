@@ -1,9 +1,13 @@
-  token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5ZWEzYjcwMDNkMzhiNDEyNjZjZCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUwOTc1MzIsImV4cCI6MTc1NTEwMTEzMn0.a775C2-pzrVvv6qMY1toNLMxq4_dzRgJDv3Sh3hZ_tE"
+  token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5ZWEzYjcwMDNkMzhiNDEyNjZjZCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxMDEzMDksImV4cCI6MTc1NTEwNDkwOX0.77HAHayrv3So6qNVYgplvAFdec9tuFoo1OjYa9OYibU"
 
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const logoutButton = document.getElementById('logout') 
   //const token = localStorage.getItem('token')
+
+  const fileInput = document.getElementById("fileInput");
+  const previewImage = document.getElementById("previewImage");
+  const previewText = document.getElementById("previewText");
 
 
   console.log('Le token recuperé depuis le local storage est :', token);
@@ -17,6 +21,46 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = ('login.html')
         alert('Accès refusé')
   }
+
+  try {
+      const res = await fetch("/api/auth/me", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      const user = await res.json();
+      console.log(user.prenom);
+      
+      if (!res.ok) throw new Error(user.message || "Erreur récupération utilisateur");
+
+      document.getElementById("userName").textContent = `${user.prenom} ${user.nom}` // met à jour le strong
+    } catch (err) {
+      console.error("Erreur récupération utilisateur :", err);
+      document.getElementById("userName").textContent = "Inconnu";
+  }
+
+  fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  // Si c'est une image, on affiche l'aperçu
+  if (file.type.startsWith("image/")) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewImage.src = e.target.result;
+      previewImage.style.display = "block";
+      previewText.style.display = "none";
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // Pour les autres fichiers, on affiche juste le nom et la taille
+    previewImage.style.display = "none";
+    previewText.textContent = `Fichier sélectionné : ${file.name} (${Math.round(file.size / 1024)} KB)`;
+    previewText.style.display = "block";
+  }
+});
 
   loadFiles();
 
@@ -49,7 +93,30 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function getFileExtension(fileName) {
+  const parts = fileName.split(".");
+  return parts.length > 1 ? parts.pop().toLowerCase() : "";
+}
+
+function getFileIconByExtension(fileName) {
+  const ext = getFileExtension(fileName);
+  const icons = {
+    jpg: "/icons/image.png",
+    jpeg: "/icons/imagejpeg.png",
+    png: "/icons/imagejpg.png",
+    pdf: "/icons/pdf.png",
+    doc: "/icons/worddoc.png",
+    docx: "/icons/worddocx.png",
+    xls: "/icons/excelxls.png",
+    xlsx: "/icons/excelxlsx.png",
+    txt: "/icons/text.png",
+    //default: "/icons/file.png"
+  };
+  return icons[ext] || icons.default;
+}
+
 async function loadFiles() {
+    //const token = localStorage.getItem("token");
     if(!token) {
         window.location.href = ('login.html')
         alert('Accès refusé')
@@ -82,6 +149,7 @@ async function loadFiles() {
 
           // Type (afficher image si c'est une image)
           const tdType = document.createElement("td");
+          const icon = document.createElement("img");
           if (file.fileType === "image") {
             const img = document.createElement("img");
             const fileName = file.filePath.split("/").pop().split("\\").pop();
@@ -91,7 +159,12 @@ async function loadFiles() {
             img.style.height = "50px";
             tdType.appendChild(img);
           } else {
-            tdType.textContent = file.fileType || "N/A";
+            icon.src = getFileIconByExtension(file.fileName);
+            icon.alt = getFileExtension(file.fileName);
+            icon.style.width = "32px";
+            icon.style.height = "32px";
+            tdType.appendChild(icon);
+            //tdType.textContent = file.fileType || "N/A";
           }
           tr.appendChild(tdType);
 
