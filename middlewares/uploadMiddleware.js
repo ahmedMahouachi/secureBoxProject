@@ -29,7 +29,7 @@ const fileFilter = (req, file, cb) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Type de fichier non supporté'), false);
+    cb(new Error('Type de fichier non supporté, (fichiers supportés: doc, docx, xls, xlsx, txt, jpeg, png, jpg, pdf)'), false);
   }
 };
 

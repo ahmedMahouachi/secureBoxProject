@@ -5,8 +5,7 @@ const path = require("path");
 // Créer un document
 exports.createDocument = async (req, res) => {
   try {
-    //const { userId } = req.body;
-    const userId = "66b4d97b8d2a4a8d2a4a8d2a"; 
+    const userId = req.user.id;  
 
     if (!req.file) {
       return res.status(400).json({ message: "Aucun fichier uploadé" });
@@ -32,7 +31,8 @@ exports.createDocument = async (req, res) => {
 // Récupérer tous les documents
 exports.getDocuments = async (req, res) => {
   try {
-    const documents = await Document.find()
+    const userId = req.user.id
+    const documents = await Document.find({userId}).populate("userId", "name email")
     res.status(200).json(documents);
   } catch (err) {
     console.error(err);
@@ -43,6 +43,7 @@ exports.getDocuments = async (req, res) => {
 // Récupérer un document par ID
 exports.getDocumentById = async (req, res) => {
   try {
+    const userId = req.user.id
     const document = await Document.findById(req.params.id).populate("userId", "name email");
     if (!document) {
       return res.status(404).json({ message: "Document non trouvé" });
@@ -51,35 +52,6 @@ exports.getDocumentById = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur lors de la récupération" });
-  }
-};
-
-//UPDATE
-
-// Mettre à jour un document (remplacer fichier ou infos)
-exports.updateDocument = async (req, res) => {
-  try {
-    const document = await Document.findById(req.params.id);
-    if (!document) {
-      return res.status(404).json({ message: "Document non trouvé" });
-    }
-
-    if (req.file) {
-      // Supprimer l'ancien fichier
-      fs.unlinkSync(document.filePath);
-      document.fileName = req.file.originalname;
-      document.filePath = req.file.path;
-      document.fileType = detectFileType(req.file.mimetype);
-      document.mimeType = req.file.mimetype;
-    }
-
-    if (req.body.userId) document.userId = req.body.userId;
-
-    await document.save();
-    res.status(200).json(document);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Erreur lors de la mise à jour" });
   }
 };
 
@@ -93,8 +65,6 @@ exports.deleteDocument = async (req, res) => {
     }
 
     // Supprimer le fichier physique
-    console.log("Nom enregistré en DB :", document.fileName);
-console.log("Chemin complet :", fileFullPath);
     fs.unlinkSync(fileFullPath);
     await Document.findByIdAndDelete(req.params.id);
 
@@ -121,7 +91,8 @@ exports.renameDocument = async (req, res) => {
     }
 
     const oldPath = document.filePath; // chemin actuel du fichier
-    const newFileName = newName + path.extname(document.fileName); // nouveau nom avec extension
+    const timestamp = Date.now();
+    const newFileName = `${timestamp}-${newName}${path.extname(document.fileName)}`;
     const newPath = path.join(path.dirname(oldPath), newFileName); // chemin complet avec le nouveau nom
 
     // Renommer le fichier sur le disque
@@ -138,7 +109,6 @@ exports.renameDocument = async (req, res) => {
     res.status(500).json({ message: "Erreur lors du renommage" });
   }
 };
-
 
 // Fonction utilitaire : détecter le type de fichier
 function detectFileType(mimeType) {
