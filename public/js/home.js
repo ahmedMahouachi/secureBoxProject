@@ -1,4 +1,4 @@
-  token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRhMWI4NmQwMWM5YWQ5MGQ0ZWI1MyIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNzEwMzksImV4cCI6MTc1NTE3NDYzOX0.CwFHSHA9DLJ__0_fOVvRe56ANQpyKYEsEXitLwYnVoI"
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRhMWI4NmQwMWM5YWQ5MGQ0ZWI1MyIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNzEwMzksImV4cCI6MTc1NTE3NDYzOX0.CwFHSHA9DLJ__0_fOVvRe56ANQpyKYEsEXitLwYnVoI"
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const fileInput = document.getElementById("fileInput");
 
+
   console.log('Le token recuperé depuis le local storage est :', token);
 
 
@@ -16,10 +17,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = 'login.html';
   });
 
-  /*if(!token) {
-        window.location.href = ('login.html')
-        alert('Accès refusé')
-  }*/
+
+  if (!token) {
+    alert('Accès refusé');
+    window.location.href = 'login.html';
+    return;
+  }
 
 
   try {
@@ -32,11 +35,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const user = await res.json();
     if (!res.ok) throw new Error(user.message || "Erreur récupération utilisateur");
+
     document.getElementById("userName").textContent = `${user.prenom} ${user.nom}`;
   } catch (err) {
     console.error("Erreur récupération utilisateur :", err);
     document.getElementById("userName").textContent = "Inconnu";
   }
+
 
   fileInput.addEventListener("change", function (event) {
     
@@ -99,16 +104,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     })
   
-    
+
   });
 
   loadFiles();
 
 
   const uploadForm = document.getElementById("uploadForm");
+
+ 
+
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const formData = new FormData(uploadForm);
 
     try {
@@ -118,21 +125,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (!res.ok) throw new Error("Erreur lors de l'upload");
 
-      return res.json();
-    })
-    .then(() => {
-      uploadForm.reset(); // Vide le champ
-      loadFiles(); // Rafraîchit la liste
-      previewContainer.innerHTML = '';
-    })
-    .catch(err => console.error(err));
-    
-    if(res.ok) {
-        afficherProfil(result)
-    } else {
-        window.location.href = ('login.html')
+      const result = await res.json();
+
+      if (res.ok) {
+        uploadForm.reset();
+        loadFiles();
+        previewContainer.innerHTML = '';
+        console.log("Fichier uploadé avec succès !");
+      } else {
+        alert(result.message || "Erreur lors de l'upload");
+        window.location.href = "login.html";
+      }
+    } catch (err) {
+      console.error("Erreur upload :", err);
 
     }
   });
@@ -157,23 +163,28 @@ function getFileIconByExtension(fileName) {
     xls: "/icons/excelxls.png",
     xlsx: "/icons/excelxlsx.png",
     txt: "/icons/text.png",
+
   };
   return icons[ext] || "/icons/file.png";
 }
 
 async function loadFiles() {
   if (!token) {
-    alert("Accès refusé");
-    window.location.href = "login.html";
+
+    alert('Accès refusé');
+    window.location.href = 'login.html';
+
     return;
   }
 
   try {
     const res = await fetch("/api/files/", {
+
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
       }
+
     });
 
     if (!res.ok) {
@@ -183,6 +194,7 @@ async function loadFiles() {
     }
 
     const files = await res.json();
+
     const tbody = document.getElementById("fileTableBody");
 
     tbody.innerHTML = "";
@@ -203,6 +215,7 @@ async function loadFiles() {
       const tr = document.createElement("tr");
 
       // Type
+
       const tdType = document.createElement("td");
       if (file.fileType === "image") {
         const img = document.createElement("img");
@@ -222,7 +235,9 @@ async function loadFiles() {
       }
       tr.appendChild(tdType);
 
-      // Nom
+
+      // Nom cliquable
+
       const tdName = document.createElement("td");
       const link = document.createElement("a");
       link.href = `/fileDetails.html?id=${file._id}`;
@@ -230,16 +245,47 @@ async function loadFiles() {
       tdName.appendChild(link);
       tr.appendChild(tdName);
 
-      // Action
+
+      // Actions (icônes télécharger et supprimer)
       const tdAction = document.createElement("td");
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "Supprimer";
-      deleteBtn.onclick = () => deleteFile(file._id);
-      tdAction.appendChild(deleteBtn);
+
+      const downloadIcon = document.createElement("img");
+      downloadIcon.src = "/icons/telechargement-direct.png";
+      downloadIcon.alt = "Télécharger";
+      downloadIcon.style.width = "20px";
+      downloadIcon.style.height = "20px";
+      downloadIcon.style.cursor = "pointer";
+      downloadIcon.style.marginRight = "10px";
+      downloadIcon.title = "Télécharger";
+
+      downloadIcon.onclick = () => {
+        const fileName = file.filePath.split("/").pop().split("\\").pop();
+        const link = document.createElement("a");
+        link.href = `/uploads/${fileName}`;
+        link.download = file.fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      tdAction.appendChild(downloadIcon);
+
+      const deleteIcon = document.createElement("img");
+      deleteIcon.src = "/icons/bouton-supprimer.png";
+      deleteIcon.alt = "Supprimer";
+      deleteIcon.style.width = "20px";
+      deleteIcon.style.height = "20px";
+      deleteIcon.style.cursor = "pointer";
+      deleteIcon.title = "Supprimer";
+
+      deleteIcon.onclick = () => deleteFile(file._id);
+      tdAction.appendChild(deleteIcon);
+
+
       tr.appendChild(tdAction);
 
       tbody.appendChild(tr);
     });
+
 
   } catch (err) {
     console.error("Erreur chargement fichiers:", err);
@@ -256,6 +302,7 @@ function deleteFile(id) {
       "Content-Type": "application/json"
     }
   })
+
     .then(res => {
       if (!res.ok) throw new Error("Erreur suppression");
       return res.json();
@@ -263,4 +310,5 @@ function deleteFile(id) {
     .then(() => loadFiles())
     .catch(err => console.error(err));
 }
+
 
