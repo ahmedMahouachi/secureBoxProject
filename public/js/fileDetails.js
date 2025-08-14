@@ -1,4 +1,4 @@
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5ZWEzYjcwMDNkMzhiNDEyNjZjZCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUwOTc1MzIsImV4cCI6MTc1NTEwMTEzMn0.a775C2-pzrVvv6qMY1toNLMxq4_dzRgJDv3Sh3hZ_tE"
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5ZWEzYjcwMDNkMzhiNDEyNjZjZCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxMDEzMDksImV4cCI6MTc1NTEwNDkwOX0.77HAHayrv3So6qNVYgplvAFdec9tuFoo1OjYa9OYibU"
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -14,6 +14,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   if(!token) {
         window.location.href = ('login.html')
         alert('Accès refusé')
+  }
+
+  try {
+      const res = await fetch("/api/auth/me", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      const user = await res.json();
+      console.log(user.prenom);
+      
+      if (!res.ok) throw new Error(user.message || "Erreur récupération utilisateur");
+
+      document.getElementById("userName").textContent = `${user.prenom} ${user.nom}` // met à jour le strong
+    } catch (err) {
+      console.error("Erreur récupération utilisateur :", err);
+      document.getElementById("userName").textContent = "Inconnu";
   }
 
   // Charger les infos du fichier
