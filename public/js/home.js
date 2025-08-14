@@ -10,33 +10,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   console.log('Le token recuperé depuis le local storage est :', token);
 
+
   logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('token')
-        window.location.href = ('login.html')
-  })
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+  });
 
   /*if(!token) {
         window.location.href = ('login.html')
         alert('Accès refusé')
   }*/
 
+
   try {
-      const res = await fetch("/api/auth/me", {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      });
+    const res = await fetch("/api/auth/me", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
 
-      const user = await res.json();
-      console.log(user.prenom);
-      
-      if (!res.ok) throw new Error(user.message || "Erreur récupération utilisateur");
-
-      document.getElementById("userName").textContent = `${user.prenom} ${user.nom}` // met à jour le strong
-    } catch (err) {
-      console.error("Erreur récupération utilisateur :", err);
-      document.getElementById("userName").textContent = "Inconnu";
+    const user = await res.json();
+    if (!res.ok) throw new Error(user.message || "Erreur récupération utilisateur");
+    document.getElementById("userName").textContent = `${user.prenom} ${user.nom}`;
+  } catch (err) {
+    console.error("Erreur récupération utilisateur :", err);
+    document.getElementById("userName").textContent = "Inconnu";
   }
 
   fileInput.addEventListener("change", function (event) {
@@ -105,19 +104,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   loadFiles();
 
+
   const uploadForm = document.getElementById("uploadForm");
-  uploadForm.addEventListener("submit",async (e) => {
-    e.preventDefault(); // Empêche le rechargement
+  uploadForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
     const formData = new FormData(uploadForm);
 
-    const res = await fetch("/api/files/", {
-      method: "POST",
-      body: formData,
-      headers: {Authorization: `Bearer ${token}`}
-    })
-    .then(res => {
+    try {
+      const res = await fetch("/api/files/", {
+        method: "POST",
+        body: formData,
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
       if (!res.ok) throw new Error("Erreur lors de l'upload");
+
       return res.json();
     })
     .then(() => {
@@ -131,8 +133,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         afficherProfil(result)
     } else {
         window.location.href = ('login.html')
+
     }
   });
+
+  loadFiles();
 });
 
 function getFileExtension(fileName) {
@@ -152,95 +157,105 @@ function getFileIconByExtension(fileName) {
     xls: "/icons/excelxls.png",
     xlsx: "/icons/excelxlsx.png",
     txt: "/icons/text.png",
-    //default: "/icons/file.png"
   };
-  return icons[ext] || icons.default;
+  return icons[ext] || "/icons/file.png";
 }
 
 async function loadFiles() {
-    //const token = localStorage.getItem("token");
-    if(!token) {
-        window.location.href = ('login.html')
-        alert('Accès refusé')
+  if (!token) {
+    alert("Accès refusé");
+    window.location.href = "login.html";
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/files/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      alert(err.message || "Erreur d'accès");
+      return;
     }
-  
-    try{
-      const res = await fetch("/api/files/", 
-        {
-          headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"}
-        })
 
-        if(!res.ok) {
-          const err = await res.json();
-          alert(err.message || "Erreur d'accès");
-          return
-        }
+    const files = await res.json();
+    const tbody = document.getElementById("fileTableBody");
 
-        const files = await res.json();
+    tbody.innerHTML = "";
 
-        if (!Array.isArray(files)) {
-          console.error("Réponse inattendue :", files);
-          return;
-        }
+    if (files.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 3;
+      td.textContent = "Aucun document";
+      td.style.textAlign = "center";
+      td.style.fontStyle = "italic";
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      return;
+    }
 
-        const tbody = document.getElementById("fileTableBody");
-        tbody.innerHTML = "";
+    files.forEach(file => {
+      const tr = document.createElement("tr");
 
-        files.forEach(file => {
-          const tr = document.createElement("tr");
+      // Type
+      const tdType = document.createElement("td");
+      if (file.fileType === "image") {
+        const img = document.createElement("img");
+        const fileName = file.filePath.split("/").pop().split("\\").pop();
+        img.src = "/uploads/" + fileName;
+        img.alt = file.fileName;
+        img.style.width = "50px";
+        img.style.height = "50px";
+        tdType.appendChild(img);
+      } else {
+        const icon = document.createElement("img");
+        icon.src = getFileIconByExtension(file.fileName);
+        icon.alt = getFileExtension(file.fileName);
+        icon.style.width = "32px";
+        icon.style.height = "32px";
+        tdType.appendChild(icon);
+      }
+      tr.appendChild(tdType);
 
-          // Type (afficher image si c'est une image)
-          const tdType = document.createElement("td");
-          const icon = document.createElement("img");
-          if (file.fileType === "image") {
-            const img = document.createElement("img");
-            const fileName = file.filePath.split("/").pop().split("\\").pop();
-            img.src = "/uploads/" + fileName;
-            img.alt = file.fileName;
-            img.style.width = "50px"; // taille de la miniature
-            img.style.height = "50px";
-            tdType.appendChild(img);
-          } else {
-            icon.src = getFileIconByExtension(file.fileName);
-            icon.alt = getFileExtension(file.fileName);
-            icon.style.width = "32px";
-            icon.style.height = "32px";
-            tdType.appendChild(icon);
-            //tdType.textContent = file.fileType || "N/A";
-          }
-          tr.appendChild(tdType);
+      // Nom
+      const tdName = document.createElement("td");
+      const link = document.createElement("a");
+      link.href = `/fileDetails.html?id=${file._id}`;
+      link.textContent = file.fileName;
+      tdName.appendChild(link);
+      tr.appendChild(tdName);
 
-          // Nom cliquable
-          const tdName = document.createElement("td");
-          const link = document.createElement("a");
-          link.href = `/fileDetails.html?id=${file._id}`;
-          link.textContent = file.fileName;
-          tdName.appendChild(link);
-          tr.appendChild(tdName);
+      // Action
+      const tdAction = document.createElement("td");
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Supprimer";
+      deleteBtn.onclick = () => deleteFile(file._id);
+      tdAction.appendChild(deleteBtn);
+      tr.appendChild(tdAction);
 
-          // Action (supprimer)
-          const tdAction = document.createElement("td");
-          const deleteBtn = document.createElement("button");
-          deleteBtn.textContent = "Supprimer";
-          deleteBtn.onclick = () => deleteFile(file._id);
-          tdAction.appendChild(deleteBtn);
-          tr.appendChild(tdAction);
+      tbody.appendChild(tr);
+    });
 
-          tbody.appendChild(tr);
-        });
-    } catch (err) {
+  } catch (err) {
     console.error("Erreur chargement fichiers:", err);
-    }
+  }
 }
 
 function deleteFile(id) {
   if (!confirm("Voulez-vous vraiment supprimer ce fichier ?")) return;
 
-  fetch(`/api/files/${id}`, 
-    { 
-      method: "DELETE", 
-      headers: {Authorization: `Bearer ${token}`, "Content-Type": "application/json"}
-    })
+  fetch(`/api/files/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  })
     .then(res => {
       if (!res.ok) throw new Error("Erreur suppression");
       return res.json();

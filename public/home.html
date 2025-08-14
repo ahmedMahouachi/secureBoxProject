@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Accueil - Gestion des Fichiers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./styles/home.css">
 </head>
 <body>
@@ -22,14 +23,17 @@
   <div class="container">
     <h2 id="ajout">Ajouter un fichier</h2>
     <form id="uploadForm" enctype="multipart/form-data" method="post" action="/api/files">
+      <label for="fileInput">Choisir un fichier :</label>
       <input id="fileInput" type="file" name="file" required />
+
       <button type="submit">Ajouter</button>
     </form>
 
     <div class="preview-container" id="previewContainer"></div>
 
     <h2>Liste des fichiers</h2>
-    <table>
+
+    <table id="fileTable">
       <thead>
         <tr>
           <th>Type de fichier</th>
@@ -38,16 +42,11 @@
         </tr>
       </thead>
       <tbody id="fileTableBody">
-
+        <!-- Rempli dynamiquement par home.js -->
       </tbody>
     </table>
   </div>
 
   <script src="./js/home.js"></script>
-  <script>
-    // Charger les fichiers dès que la page est prête
-    document.addEventListener("DOMContentLoaded", loadFiles);
-  </script>
-
 </body>
 </html>
