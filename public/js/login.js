@@ -6,7 +6,7 @@ let googleButton = document.getElementById('google-auth');
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
+ 
     // Récupération et nettoyage des champs
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
