@@ -19,7 +19,7 @@ router.get("/get_history_by_id/:historyId",authMiddleware, audit("get_history_by
 
 router.post("/create_history",authMiddleware,audit("test_Middleware"), createHistoryById);
 router.delete("/delete_history/:historyId", deleteHistory);
-router.put("/update_history/:historyId",authMiddleware, audit("update_history"), updateHistory);
+router.put("/update_history/:historyId/:id", audit("update_history"), updateHistory);
 
 //Route User
 router.get("/get_all_user",getAllUser);
