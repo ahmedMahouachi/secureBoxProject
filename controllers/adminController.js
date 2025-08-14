@@ -113,7 +113,7 @@ const getAllUser = async (req, res) => {
 
 const deleteUserById = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.params.id;
 
         // Vérifier si l'utilisateur existe
         const user = await User.findById(userId);
