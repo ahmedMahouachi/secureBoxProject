@@ -18,7 +18,7 @@ router.get("/get_history/:id",createHistoryMiddleware, getHistory);
 router.get("/get_history_by_id/:historyId",authMiddleware, createHistoryMiddleware, getHistoryById);
 
 //router.post("/create_history",authMiddleware,createHistoryMiddleware, createHistoryById);
-router.delete("/delete_history/:historyId",authMiddleware, createHistoryMiddleware, deleteHistory);
+router.delete("/delete_history/:historyId", deleteHistory);
 router.put("/update_history/:historyId",authMiddleware, createHistoryMiddleware, updateHistory);
 
 //Route User
