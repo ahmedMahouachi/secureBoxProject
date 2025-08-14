@@ -2,6 +2,13 @@ const loginForm = document.getElementById("loginForm");
 const errorLogin = document.getElementById("errorLogin");
 let googleButton = document.getElementById("google-auth");
 
+const params = new URLSearchParams(window.location.search)
+token = params.get('token')
+if (token){
+  localStorage.setItem("token",token)
+  window.location.href = 'home.html'
+}
+
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();

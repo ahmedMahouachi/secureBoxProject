@@ -96,7 +96,7 @@ exports.googleAuth = (req, res) => {
         { expiresIn: "2h" }
     );
 
-    res.redirect(`/home.html?token=${token}`);
+    res.redirect(`/login.html?token=${token}`);
 };
 
 
