@@ -1,10 +1,10 @@
 const express = require("express");
 const authMiddleware = require("../middlewares/authMiddleware");
-const createHistoryMiddleware = require("../middlewares/historyMiddleware")
+const audit = require("../middlewares/historyMiddleware")
 const {
     getHistory,
     getHistoryById,
-//    createHistoryById,
+    createHistoryById,
     deleteHistory,
     getAllUser,
     deleteUserById,
@@ -14,12 +14,12 @@ const {
 const router = express.Router();
 
 //Route de l'historique 
-router.get("/get_history/:id",createHistoryMiddleware, getHistory);
-router.get("/get_history_by_id/:historyId",authMiddleware, createHistoryMiddleware, getHistoryById);
+router.get("/get_history/:id", getHistory);
+router.get("/get_history_by_id/:historyId",authMiddleware, audit("get_history_by_id"), getHistoryById);
 
-//router.post("/create_history",authMiddleware,createHistoryMiddleware, createHistoryById);
+router.post("/create_history",authMiddleware,audit("test_Middleware"), createHistoryById);
 router.delete("/delete_history/:historyId", deleteHistory);
-router.put("/update_history/:historyId",authMiddleware, createHistoryMiddleware, updateHistory);
+router.put("/update_history/:historyId",authMiddleware, audit("update_history"), updateHistory);
 
 //Route User
 router.get("/get_all_user",getAllUser);
