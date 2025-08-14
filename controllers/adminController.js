@@ -81,24 +81,26 @@ const deleteHistory = async (req, res) =>{
     res.status(204).send();
 }
 
-/*
-//A vérifié
+
 const updateHistory = async (req, res) => {
     const historyId = req.params.historyId;
+
     const historyRoute = req.body.route;
+    const historyAction = req.body.action;
+    const historyMethod = req.body.method;
 
     const history = await History.findById(historyId);
     if (!history) {
         return res.status(404).json({ message: "Enregistrement non trouvé" });
     }
     
-    const filter = {id: historyId};
-    const update = {route: historyRoute};
+    const filter = {_id: historyId};
+    const update = {route: historyRoute, action: historyAction, method: historyMethod};
 
-    history = await History.findOneAndUpdate(filter, update);
+    const resHistory = await History.findOneAndUpdate(filter, update, {new : true});
     
-    res.status(201).json(history);
-};*/
+    res.status(201).json(resHistory);
+};
 
 //------------------------
 //          User
@@ -137,5 +139,6 @@ module.exports = {
     createHistoryById,
     deleteHistory,
     getAllUser,
-    deleteUserById
+    deleteUserById,
+    updateHistory
 };
