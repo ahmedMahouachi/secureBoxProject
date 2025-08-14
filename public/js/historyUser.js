@@ -5,18 +5,34 @@ const token = localStorage.getItem("token"); // à adapter selon ton stockage
 const params = new URLSearchParams(window.location.search);
 const userId = params.get("id");
 
+let users = []; // tableau pour stocker tous les utilisateurs
+
+// Récupérer tous les utilisateurs
+async function fetchUsersList() {
+    try {
+        const res = await fetch("/dashboard/get_all_user");
+        users = await res.json(); // on garde tout dans un tableau
+    } catch (err) {
+        console.error("Erreur récupération users", err);
+    }
+}
+
 // Charger et afficher l'historique
 async function chargerHistorique() {
     try {
+        await fetchUsersList();
         const res = await fetch(`${API_URL}/get_history/${userId}`);
         const historiques = await res.json();
 
         tbody.innerHTML = "";
 
         for (const historique of historiques) {
+            const user = users.find(u => u._id === historique.userId);
+            const userName = user ? `${user.firstName || ""} ${user.lastName || ""}` : "Inconnu";
+            
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${historique.userId || "Inconnu"}</td>
+                <td>${userName || "Inconnu"}</td>
                 <td>${historique.action || ""}</td>
                 <td>${historique.createdAt ? new Date(historique.createdAt).toLocaleString() : ""}</td>
                 <td>${historique.route || ""}</td>
