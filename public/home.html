@@ -25,12 +25,11 @@
     <form id="uploadForm" enctype="multipart/form-data" method="post" action="/api/files">
       <label for="fileInput">Choisir un fichier :</label>
       <input id="fileInput" type="file" name="file" required />
-      <div>
-        <img id="previewImage" style="display:none; max-width:200px; max-height:200px;">
-        <p id="previewText" style="display:none;"></p>
-      </div>
+
       <button type="submit">Ajouter</button>
     </form>
+
+    <div class="preview-container" id="previewContainer"></div>
 
     <h2>Liste des fichiers</h2>
 
