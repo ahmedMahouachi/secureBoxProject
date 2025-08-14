@@ -1,10 +1,10 @@
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRhMWI4NmQwMWM5YWQ5MGQ0ZWI1MyIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNzczNjksImV4cCI6MTc1NTE4MDk2OX0.SerIx9ddTVqaAnfwZzi6Gv2_7zZhExvuajIjTTsZ_mA"
-
+//token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRhMWI4NmQwMWM5YWQ5MGQ0ZWI1MyIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNzczNjksImV4cCI6MTc1NTE4MDk2OX0.SerIx9ddTVqaAnfwZzi6Gv2_7zZhExvuajIjTTsZ_mA"
+  const token = localStorage.getItem('token')
 
 document.addEventListener("DOMContentLoaded", async () => {
   const logoutButton = document.getElementById('logout') 
   const previewContainer = document.getElementById("previewContainer");
-  //const token = localStorage.getItem('token')
+
 
   const fileInput = document.getElementById("fileInput");
 
