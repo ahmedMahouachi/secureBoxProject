@@ -1,5 +1,4 @@
-token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWM5ZWEzYjcwMDNkMzhiNDEyNjZjZCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxMDEzMDksImV4cCI6MTc1NTEwNDkwOX0.77HAHayrv3So6qNVYgplvAFdec9tuFoo1OjYa9OYibU"
-
+token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWRiNTIwNzFkN2ZlYmM1YjZmY2RhZSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTUxNjkyNTMsImV4cCI6MTc1NTE3Mjg1M30.TJLxff2GuHokfpvwH1jSO-Il6NpFXZuKmypaF7vDiSc"
 
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
