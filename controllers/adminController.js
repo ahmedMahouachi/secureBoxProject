@@ -88,6 +88,7 @@ const updateHistory = async (req, res) => {
     const historyRoute = req.body.route;
     const historyAction = req.body.action;
     const historyMethod = req.body.method;
+    const historyAdrIp = req.body.adresseIP;
 
     const history = await History.findById(historyId);
     if (!history) {
@@ -95,7 +96,7 @@ const updateHistory = async (req, res) => {
     }
     
     const filter = {_id: historyId};
-    const update = {route: historyRoute, action: historyAction, method: historyMethod};
+    const update = {route: historyRoute, action: historyAction, method: historyMethod, adresseIP:historyAdrIp};
 
     const resHistory = await History.findOneAndUpdate(filter, update, {new : true});
     
