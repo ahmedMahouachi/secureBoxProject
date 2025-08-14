@@ -1,7 +1,7 @@
-
 const loginForm = document.getElementById("loginForm");
 const errorLogin = document.getElementById("errorLogin");
 let googleButton = document.getElementById('google-auth');
+
 
 if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
@@ -33,8 +33,9 @@ if (loginForm) {
         // Stockage du token
         localStorage.setItem("token", result.token);
 
-        // Redirection vers la page home
+        // Redirection vers la page d'accueil
         window.location.href = "home.html";
+
       } else if (res.status === 404) {
         errorLogin.textContent = "Utilisateur non trouvé";
         errorLogin.style.display = "block";
